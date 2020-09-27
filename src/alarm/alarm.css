@@ -1,0 +1,62 @@
+#nodeManage {
+    background: white;
+    min-height: 500px;
+}
+
+.gutter-box-nodemanage {
+    text-align:left;
+}
+
+.ant-input-disabled{
+    color: black;
+    text-align: center;
+}
+
+
+#NodeManage th{
+    text-align: center;
+}
+
+#NodeManage td{
+    text-align: center;
+}
+
+ .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap, .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap{
+    background: white;
+    padding-left: 25px;
+    height: 55px;
+}
+
+#alarm .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+    color:#2a2a2a;
+    font-size: 18px;
+}
+
+.ant-tabs-tab-btn{
+    color:#555;
+    font-size: 18px;
+}
+
+.ant-tabs-ink-bar{
+    background: #fd7a12;
+}
+
+.ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav{
+    margin-bottom: 20px;
+}
+
+#alarm .contentmain{
+    background: white;
+    padding: 20px;
+}
+
+.ant-btn-primary{
+background: #fe8616;
+border:1px solid #fe8616;
+/* border-radius: 5px; */
+}
+
+
+.ant-table table{
+    text-align: center;
+}

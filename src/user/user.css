@@ -1,0 +1,84 @@
+#nodeManage {
+    background: white;
+    min-height: 500px;
+}
+
+.gutter-box-nodemanage {
+    text-align:left;
+}
+
+.ant-input-disabled{
+    color: black;
+    text-align: center;
+}
+
+
+#NodeManage th{
+    text-align: center;
+}
+
+#NodeManage td{
+    text-align: center;
+}
+
+
+.ant-input-group{
+    margin: 0;
+}
+
+.ant-card-body{
+    padding: 20px;
+}
+
+.ant-table-tbody > tr > td{
+    font-size: 14px;
+    color:#555
+}
+
+.addrole{
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.ant-modal-header{
+    background: url(../images/btnback.png) no-repeat ;
+    border:'none';
+    padding: 10px 24px;
+    background-size: cover;
+}
+
+.ant-modal-title{
+    color:white;
+}
+
+.ant-modal-body{
+    padding: 10px 24px;
+}
+
+.ant-switch-checked{
+    background: #fe8616;
+}
+
+.ant-input:focus, .ant-input-focused{
+    border-color:#fe8616 ;
+    box-shadow: none;
+}
+
+.ant-input-search-enter-button input:hover, .ant-input-search-enter-button input:focus{
+    border-color:#fe8616 ;
+    box-shadow: none;
+}
+
+.ant-cascader-picker:focus .ant-cascader-input{
+    border-color:#fe8616 ;
+    box-shadow: none;
+}
+
+.ant-input:hover{
+    border-color:#fe8616 ;
+    box-shadow: none;
+}

@@ -1,0 +1,134 @@
+
+
+  /* @font-face {
+    font-family: 'myFamily'; 
+    src: url('./Alibaba-PuHuiTi-Medium.otf');
+  }
+   */
+   
+.cover{
+  width: 100%;
+  height: 100vh;
+  background: url(./background.png) no-repeat bottom  center;
+  background-size:cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: 5vh;
+}
+
+
+ #signbody .logo{
+  font-size: 36px;
+  font-family:'Alibaba-PuHuiTi1f1b5035d81d0b6';
+  color:#2a2a2a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
+ #signbody .loginmain{
+  width: 800px;
+  height: 440px;
+  margin:0 auto;
+  border-radius: 5px;
+  margin-top: 40px;
+  box-shadow: -2px 5px 20px #e2e7e7;
+  background: #fafcff;
+ }
+
+ #signbody .loginl{
+   width: 55%;
+   height: 440px;
+   background: url(./loginl.png) no-repeat  center center;
+   float: left;
+ }
+
+
+ #signbody .loginr{
+  width:45%;
+  float: right;
+  padding: 40px;
+}
+
+#signbody .logintitle{
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  display: inline-block;
+  border-bottom: 2px solid #fc710f;
+}
+
+#signbody  .bombtn{
+  text-align: center;
+  margin-top: 40px;
+  color:#666666;
+  font-size: 14px;
+}
+
+#signbody  .bombtns{
+  margin-top: 10px;
+  color:#666666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#signbody .SignIn-Input{
+  margin-bottom: 40px;
+  margin-top: 50px;
+ }
+
+ #signbody .SignIn-Inputs{
+  margin-bottom: 40px;
+ }
+
+
+
+
+.ant-input-affix-wrapper .ant-input:not(:first-child){
+  padding-left:15px;
+}
+
+/* #signbody .SignIn-Input{
+  background: url(./pass.png) no-repeat 20px center !important;
+  padding-left: 40px;
+} */
+
+
+
+@media screen and (max-height: 650px) {
+  #signbody .logo{
+    font-size: 30px;
+   }
+  #signbody .loginmain{
+    height: 300px;
+    width: 600px;
+    margin-top: 30px;
+  }
+  #signbody .signlogo{
+    width: 50px;
+  }
+  #signbody .logintitle{
+    margin-top: 10px;
+  }
+  #signbody .loginl{
+    height: 300px;
+    background-size: 100%;
+  }
+  #signbody .loginr{
+    padding: 20px;
+  }
+  #signbody .SignIn-Input{
+    margin-bottom: 20px;
+    margin-top: 30px;
+   }
+  
+   #signbody .SignIn-Inputs{
+    margin-bottom: 20px;
+   }
+  
+}

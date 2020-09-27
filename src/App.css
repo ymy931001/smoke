@@ -1,0 +1,122 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+body{
+  background: #f2f2f2;
+}
+
+.headermain{
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ant-layout-header{
+  width: 100%;
+  background: white;
+  height: 70px;
+}
+
+.headerleft{
+  font-size: 28px;
+  color:#333;
+  display: flex;
+  align-items: center;
+}
+
+.headerright{
+  text-align: right;
+  display: flex;
+  align-content: center;
+  height: 70px;
+}
+
+.bodyleft{
+  margin-left: 30px;
+  margin-top: 20px;
+  min-height: 85vh;
+  margin-right: 20px;
+}
+
+.ant-layout-sider{
+  min-height: 85vh;
+  background: white;
+  width: 240px !important;
+  max-width: 240px !important;
+  min-width: 240px !important;
+  height: 55px;
+}
+
+.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub{
+  background: white;
+  color:#555555;
+}
+
+
+.ant-menu-dark.ant-menu-inline .ant-menu-item, .ant-menu-submenu-title{
+  height: 55px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding-left: 55px !important;
+}
+
+
+.ant-menu-item a span{
+  color:#555555;
+}
+.ant-menu-item-selected a span{
+  color:white
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+  background: url(./back.png) no-repeat;
+  width: 260px !important;
+  max-width: 260px !important;
+  min-width: 260px !important;
+  padding-left: 55px !important; 
+}
+
+.ant-btn-primary:hover, .ant-btn-primary:focus{
+  background:#fe8616;
+  border:1px solid #fe8616;
+  opacity: 0.8;
+}

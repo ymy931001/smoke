@@ -1,0 +1,85 @@
+#highsetbody .ant-menu-root{
+    height: 950px;
+}
+#highsetbody .Lowalar-left{
+    margin-top: 24px;
+}
+#highsetbody .Administrator{
+    float: right;
+    height: 50px;
+    line-height: 40px;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+}
+#highsetbody .Administrator i{
+    margin-right: 25px;
+}
+#highsetbody .Administrator  span{
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: red;
+    display: inline-block;
+}
+#highsetbody .homepage{
+    line-height: 50px;
+    font-size: 18px;
+    padding: 0;
+}
+#highsetbody  .topback{
+    /* background: url(../background.jpg) */
+    background: #001529;
+}
+#highsetbody .ant-menu-submenu-title:hover{
+    color:white;
+}
+#highsetbody .ant-menu-horizontal{
+    border:none;
+}
+#highsetbody  .ant-menu-item, .ant-menu-submenu-title{
+    padding: 0;
+}
+#highsetbody .top{
+    height: 50px;
+    background: #00284D;
+    width: 100%;
+    line-height: 36px;
+    color: white;
+    overflow: hidden;
+    text-align: center;
+    padding: 7px;
+    font-size: 13px;
+}
+#highsetbody .switch-btn{
+    float: left;
+}
+#highsetbody .Lowalar-right{
+    float: left;
+    margin-top: 24px;
+    width: 77%;
+}
+#highsetbody .Lowalar-rt{
+    border-bottom: 1px solid #999;
+    height: 50px;
+    width: 100%;
+    padding-left: 20px;
+}
+#highsetbody .nav{
+    height:30px;
+    line-height: 30px;
+    padding-left: 20px;
+    background: white;
+}
+#highsetbody .personl{
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+    margin-right: 20px;
+    font-size: 18px;
+}
+#highsetbody  .line{
+    height: 60px;
+    font-size: 18px !important;
+}

@@ -30,6 +30,8 @@ export const getalarmList = params =>
     districtId: params[4],
     unitId: params[5],
     deviceId: params[6],
+    pageNum: params[7],
+    pageSize: params[8],
   });
 
 
@@ -230,6 +232,8 @@ export const getNotHaveList = params =>
 export const getactivitylog = params =>
   http.get(url + "/api/v1/log/activity/get", {
     access_token: localStorage.getItem('token'),
+    pageNum: params[0],
+    pageSize: params[1],
   });
 
 
@@ -237,9 +241,11 @@ export const getactivitylog = params =>
 export const getdevicelog = params =>
   http.get(url + "/api/v1/log/device/get", {
     access_token: localStorage.getItem('token'),
-    deviceId: params[0],
-    beginTime: params[1],
-    endTime: params[2],
+    pageNum: params[0],
+    pageSize: params[1],
+    deviceId: params[2],
+    beginTime: params[3],
+    endTime: params[4],
   });
 
 

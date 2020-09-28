@@ -7,7 +7,7 @@ import {
     Input,
     Table,
     Select,
-    Modal, DatePicker, message, Cascader, Tabs, Switch
+    Modal, DatePicker, message, Cascader, Tabs, Switch, Pagination
 } from "antd";
 import {
     getdeviceList, getNotHaveList, getunitList, addsensor,
@@ -45,6 +45,8 @@ class App extends React.Component {
             typenone: "inline-block",
             pageNum: 1,
             pageNumSize: 10,
+            pageNums: 1,
+            pageNumSizes: 10,
             unitlist: [],
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
         };
@@ -601,18 +603,21 @@ class App extends React.Component {
     //传感器上下线记录
     onlinelist = (text, record, index) => {
         getdevicelog([
+            this.state.pageNums,
+            this.state.pageNumSizes,
             record.deviceId
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 var arr = []
-                for (var i in res.data.data) {
-                    if (res.data.data[i].dataType === 3 || res.data.data[i].dataType === 4) {
-                        arr.push(res.data.data[i])
+                for (var i in res.data.data.list) {
+                    if (res.data.data.list[i].dataType === 3 || res.data.data.list[i].dataType === 4) {
+                        arr.push(res.data.data.list[i])
                     }
                 }
                 this.setState({
                     recordlist: arr,
                     recordvisible: true,
+                    cameratotal: arr.length
                 }, function () {
                     if (this.state.recordlist.length > 10) {
                         this.setState({
@@ -633,13 +638,15 @@ class App extends React.Component {
     lookcamera = (text, record, index) => {
         console.log(record)
         getdevicelog([
+            this.state.pageNum,
+            this.state.pageNumSize,
             record.deviceId
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 var arr = []
-                for (var i in res.data.data) {
-                    if (res.data.data[i].dataType === 3 || res.data.data[i].dataType === 4) {
-                        arr.push(res.data.data[i])
+                for (var i in res.data.data.list) {
+                    if (res.data.data.list[i].dataType === 3 || res.data.data.list[i].dataType === 4) {
+                        arr.push(res.data.data.list[i])
                     }
                 }
                 this.setState({
@@ -957,6 +964,7 @@ class App extends React.Component {
                             pagination={this.state.recordpage}
                             bordered
                         />
+
                     </Modal>
                     <Modal
                         title="摄像头上下线记录"
@@ -973,6 +981,15 @@ class App extends React.Component {
                             pagination={this.state.recordpage}
                             bordered
                         />
+                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                            <Pagination
+                                onShowSizeChange={this.onShowSizeChange}
+                                defaultCurrent={1}
+                                onChange={this.pagechange}
+                                total={this.state.cameratotal}
+                                hideOnSinglePage={true}
+                            />
+                        </div>
                     </Modal>
                     <Modal
                         title="实时画面"

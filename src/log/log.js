@@ -5,7 +5,7 @@ import {
     Button,
     Input,
     Cascader,
-    // DatePicker,
+    Pagination,
     Tabs
 } from "antd";
 import { getdevicelog, getactivitylog } from '../axios';
@@ -36,6 +36,8 @@ class App extends React.Component {
             typenone: "inline-block",
             pageNum: 1,
             pageNumSize: 10,
+            pageNums: 1,
+            pageNumSizes: 10,
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
         };
         this.nodeInfoTableColumns = [
@@ -142,22 +144,38 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        getdevicelog([
 
+        this.devicelog()
+
+        this.activitylog()
+
+    }
+
+    //获取设备日志
+    devicelog = () => {
+        getdevicelog([
+            this.state.pageNum,
+            this.state.pageNumSize,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    cameraalarmlist: res.data.data
+                    deviceloglist: res.data.data.list,
+                    total: res.data.data.total
                 })
             }
         });
+    }
 
+    //获取操作日志
+    activitylog = () => {
         getactivitylog([
-
+            this.state.pageNums,
+            this.state.pageNumSizes,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    sensoralarmlist: res.data.data
+                    activelist: res.data.data.list,
+                    devicetotal: res.data.data.total
                 })
             }
         });
@@ -177,11 +195,34 @@ class App extends React.Component {
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    cameraalarmlist: res.data.data
+                    deviceloglist: res.data.data
                 })
             }
         });
     }
+
+    //摄像头页数变化
+    pagechange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNum: page,
+            pageNumSize: b,
+        }, function () {
+            this.devicelog()
+        })
+    }
+
+    //传感器页数变化
+    devicepagechange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNums: page,
+            pageNumSizes: b,
+        }, function () {
+            this.activitylog()
+        })
+    }
+
 
     render() {
         const nodeInfoTableColumns = this.nodeInfoTableColumns.map((col) => {
@@ -245,12 +286,12 @@ class App extends React.Component {
 
                                         <div style={{ marginTop: '20px' }}>
                                             <Table
-                                                dataSource={this.state.cameraalarmlist}
+                                                dataSource={this.state.deviceloglist}
                                                 columns={nodeInfoTableColumns}
-
+                                                pagination={false}
                                             />
                                         </div>
-                                        {/* <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
                                             <Pagination
                                                 onShowSizeChange={this.onShowSizeChange}
                                                 defaultCurrent={1}
@@ -258,7 +299,7 @@ class App extends React.Component {
                                                 total={this.state.total}
                                                 hideOnSinglePage={true}
                                             />
-                                        </div> */}
+                                        </div>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="操作日志" key="2">
@@ -280,8 +321,18 @@ class App extends React.Component {
                                         <Button type="primary" onClick={this.query}>查询</Button>
                                         <div style={{ marginTop: '20px' }}>
                                             <Table
-                                                dataSource={this.state.sensoralarmlist}
+                                                dataSource={this.state.activelist}
                                                 columns={sensorColumns}
+                                                pagination={false}
+                                            />
+                                        </div>
+                                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                                            <Pagination
+                                                onShowSizeChange={this.onShowSizeChange}
+                                                defaultCurrent={1}
+                                                onChange={this.devicepagechange}
+                                                total={this.state.devicetotal}
+                                                hideOnSinglePage={true}
                                             />
                                         </div>
                                     </div>

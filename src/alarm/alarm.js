@@ -5,7 +5,7 @@ import {
     Button,
     Input,
     Cascader,
-    // DatePicker,
+    Pagination,
     Tabs, message, Modal
 } from "antd";
 import { getalarmList, getAlarmVideoUrl } from '../axios';
@@ -29,6 +29,8 @@ class App extends React.Component {
             typenone: "inline-block",
             pageNum: 1,
             pageNumSize: 10,
+            pageNums: 1,
+            pageNumSizes: 10,
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
         };
@@ -122,11 +124,16 @@ class App extends React.Component {
             this.state.cityid,
             this.state.areaid,
             this.state.siteId,
-            this.state.keytext
+            this.state.keytext,
+            this.state.pageNum,
+            this.state.pageNumSize,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    cameraalarmlist: res.data.data.list
+                    cameraalarmlist: res.data.data.list,
+                    cameratotal: res.data.data.total
+                }, function () {
+                    console.log(this.state.cameratotal)
                 })
             }
         });
@@ -140,11 +147,14 @@ class App extends React.Component {
             this.state.cityids,
             this.state.areaids,
             this.state.siteIds,
-            this.state.keytexts
+            this.state.keytexts,
+            this.state.pageNums,
+            this.state.pageNumSizes,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    sensoralarmlist: res.data.data.list
+                    sensoralarmlist: res.data.data.list,
+                    sensortotal: res.data.data.total
                 })
             }
         });
@@ -156,6 +166,8 @@ class App extends React.Component {
             keytext: e.target.value
         })
     }
+
+
 
     //设备位置选择
     addresschange = (e) => {
@@ -256,6 +268,28 @@ class App extends React.Component {
         });
     }
 
+    //摄像头页数变化
+    pagechange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNum: page,
+            pageNumSize: b,
+        }, function () {
+            this.cameraalarm()
+        })
+    }
+
+    //传感器页数变化
+    sensorpagechange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNums: page,
+            pageNumSizes: b,
+        }, function () {
+            this.sensoralarm()
+        })
+    }
+
     render() {
         const nodeInfoTableColumns = this.nodeInfoTableColumns.map((col) => {
             if (!col.editable) {
@@ -329,18 +363,21 @@ class App extends React.Component {
                                             <Table
                                                 dataSource={this.state.cameraalarmlist}
                                                 columns={nodeInfoTableColumns}
-                                            // pagination={false}
+                                                pagination={false}
                                             />
                                         </div>
-                                        {/* <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                                        {/* <div>
+                                        <Pagination defaultCurrent={6} total={500} />
+                                        </div> */}
+                                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
                                             <Pagination
                                                 onShowSizeChange={this.onShowSizeChange}
                                                 defaultCurrent={1}
                                                 onChange={this.pagechange}
-                                                total={this.state.total}
+                                                total={this.state.cameratotal}
                                                 hideOnSinglePage={true}
                                             />
-                                        </div> */}
+                                        </div>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="传感器告警" key="2">
@@ -364,7 +401,16 @@ class App extends React.Component {
                                             <Table
                                                 dataSource={this.state.sensoralarmlist}
                                                 columns={sensorColumns}
-                                            // pagination={false}
+                                                pagination={false}
+                                            />
+                                        </div>
+                                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                                            <Pagination
+                                                onShowSizeChange={this.onShowSizeChange}
+                                                defaultCurrent={1}
+                                                onChange={this.sensorpagechange}
+                                                total={this.state.sensortotal}
+                                                hideOnSinglePage={true}
                                             />
                                         </div>
                                     </div>

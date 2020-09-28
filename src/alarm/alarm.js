@@ -126,7 +126,7 @@ class App extends React.Component {
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    cameraalarmlist: res.data.data
+                    cameraalarmlist: res.data.data.list
                 })
             }
         });
@@ -144,7 +144,7 @@ class App extends React.Component {
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    sensoralarmlist: res.data.data
+                    sensoralarmlist: res.data.data.list
                 })
             }
         });

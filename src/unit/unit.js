@@ -154,7 +154,7 @@ class App extends React.Component {
             var map = new AMap.Map("mapContainer", {
                 resizeEnable: true,
                 keyboardEnable: false,
-                center: [120.201316, 30.236285],//地图中心点
+                center: [122.11404, 30.01978],//地图中心点
                 zoom: 15,//地图显示的缩放级别
             });
 
@@ -166,12 +166,12 @@ class App extends React.Component {
                 };
                 var autocomplete = new AMap.Autocomplete(autoOptions);
 
-                // var clickEventListener = map.on('click', function (e) {
-                //   console.log(e)
-                //   document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
-                //   document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
-                //   // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
-                // });
+                var clickEventListener = map.on('click', function (e) {
+                  console.log(e)
+                  document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
+                  document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
+                  // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
+                });
                 var placeSearch = new AMap.PlaceSearch({
                     // city: '浙江',
                     map: map

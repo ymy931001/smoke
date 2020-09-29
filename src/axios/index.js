@@ -307,3 +307,10 @@ export const getDistrictUnit = params =>
   http.get(url + "/api/v1/statistics/getDistrictUnit", {
     access_token: localStorage.getItem('token'),
   });
+
+//获取所有菜单
+export const getallmemu = params =>
+  http.get(url + "/api/v1/admin/menu/get", {
+    access_token: localStorage.getItem('token'),
+  });
+

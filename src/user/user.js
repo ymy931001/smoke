@@ -17,7 +17,7 @@ import {
 import {
     getaccount, getrole, addrole, deleterole,
     addaccount, deleteaccount, updateaccount
-    , getroleMenu, updateroleMenu, changeaccount
+    , getroleMenu, updateroleMenu, changeaccount, getallmemu
 } from '../axios';
 import "./user.css";
 
@@ -39,7 +39,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             rolelist: [],
-            permissionlist: JSON.parse(localStorage.getItem('menulist')),
+            permissionlist: [],
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree'))
         };
@@ -174,17 +174,6 @@ class App extends React.Component {
 
     componentWillMount() {
         document.title = "用户管理";
-        // getmenu([
-
-        // ]).then(res => {
-        //     if (res.data && res.data.message === "success") {
-        //         console.log(JSON.parse(localStorage.getItem('menulist')))
-        //         console.log(res.data.data)
-        //         this.setState({
-        //             permissionlist: res.data.data
-        //         })
-        //     }
-        // });
     }
 
     componentDidMount() {
@@ -533,6 +522,11 @@ class App extends React.Component {
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
+            } else {
+                return (
+                    <TreeNode title={item.name} key={item.id} dataRef={item}>
+                    </TreeNode>
+                );
             }
             return <TreeNode {...item} />;
         });
@@ -544,16 +538,27 @@ class App extends React.Component {
         this.setState({
             roleid: record.id
         })
-        getroleMenu([
-            record.name
+        getallmemu([
+
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
-                    checkedKeys: res.data.data[0].permission.split(','),
-                    menuvisible: true,
+                    permissionlist: res.data.data
+                }, function () {
+                    getroleMenu([
+                        record.name
+                    ]).then(res => {
+                        if (res.data && res.data.message === "success") {
+                            this.setState({
+                                checkedKeys: res.data.data[0].permission.split(','),
+                                menuvisible: true,
+                            })
+                        }
+                    });
                 })
             }
         });
+
     }
 
     onExpand = (expandedKeys) => {

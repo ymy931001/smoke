@@ -22,8 +22,27 @@ import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 const { Content, Sider, Header } = Layout;
-// const SubMenu = Menu.SubMenu;
 
+
+const icon = {
+  6: <PieChartOutlined />,
+  3: <AlertOutlined />,
+  2: <LaptopOutlined />,
+  5: <BankOutlined />,
+  4: <UsergroupDeleteOutlined />,
+  10: < UserOutlined />,
+  9: <ReadOutlined />
+}
+
+const path = {
+  6: '/app/statistics',
+  3: '/app/alarm',
+  2: '/app/device',
+  5: '/app/unit',
+  4: '/app/user',
+  10: '/app/person',
+  9: '/app/log'
+}
 
 class App extends Component {
   state = {
@@ -31,6 +50,8 @@ class App extends Component {
     openKey: "",
     usertypenone: 'block',
     disnone: "none",
+    datavdis: "none",
+    menulist: []
   };
 
   componentwillMount = () => {
@@ -38,6 +59,21 @@ class App extends Component {
 
   }
   componentDidMount() {
+    // console.log()
+    var arr = []
+    var a = JSON.parse(localStorage.getItem('menulist'))
+    for (var i in a) {
+      if (a[i].id === 1) {
+        this.setState({
+          datavdis: ""
+        })
+      } else {
+        arr.push(a[i])
+      }
+    }
+    this.setState({
+      menulist: arr
+    })
 
   }
 
@@ -48,7 +84,17 @@ class App extends Component {
 
 
   render() {
-
+    console.log(icon[1])
+    // console.log(this.state.menulist)
+    const menuoption = this.state.menulist.map((province) =>
+      <Menu.Item key={province.id}
+      >
+        <Link to={path[province.id]}>
+          {icon[province.id]}
+          <span>{province.name}</span>
+        </Link>
+      </Menu.Item>
+    );
     return (
       <ConfigProvider locale={zh_CN}>
         <div className="bodymain">
@@ -69,13 +115,15 @@ class App extends Component {
                   selectedKeys={[!localStorage.getItem("menuid") ? "2" : localStorage.getItem("menuid")]}
                 >
                   <Menu.Item key="0"
-                    style={{ display: this.state.lsdis }}
+                    style={{ display: this.state.datavdis }}
                   >
-                    <a href={"http://datav.aliyuncs.com/share/ce68ba8cf5150b24f9e4e49cad95b377"} style={{ color: 'rgba(255, 255, 255, 0.65)' }} target="_blank">
+                    <a href={"http://datav.aliyuncs.com/share/ce68ba8cf5150b24f9e4e49cad95b377?unitId=4"} style={{ color: 'rgba(255, 255, 255, 0.65)' }} target="_blank">
                       <DashboardOutlined />
                       <span>仪表盘</span>
                     </a>
                   </Menu.Item>
+                  {menuoption}
+                  {/* 
                   <Menu.Item key="1"
                   >
                     <Link to="/app/statistics">
@@ -125,7 +173,7 @@ class App extends Component {
                       <ReadOutlined />
                       <span>日志管理</span>
                     </Link>
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </Menu>
               </Sider>
             </div>

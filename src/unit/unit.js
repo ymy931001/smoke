@@ -94,7 +94,7 @@ class App extends React.Component {
                 render: (text, record, index) => {
                     return (
                         <div>
-                            <span  onClick={() => this.edit(text, record, index)}>
+                            <span onClick={() => this.edit(text, record, index)}>
                                 <a><img src={require('../images/edit.png')} alt="" /></a>
                             </span>
                             <span style={{ marginLeft: '10px' }} onClick={() => this.unitdelete(text, record, index)}>
@@ -230,7 +230,7 @@ class App extends React.Component {
 
     //打开添加单位弹窗
     addunit = () => {
-        // this.initMap()
+        this.initMap()
         // var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz123456789';
         // var maxPos = $chars.length;
         // var pwd = '';

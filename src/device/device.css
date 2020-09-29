@@ -44,3 +44,7 @@
     color:#2a2a2a;
     font-size: 18px;
 }
+
+.modeltable  .ant-table-thead > tr > th, .modeltable   .ant-table-tbody > tr > td{
+    padding: 8px 20px;
+}

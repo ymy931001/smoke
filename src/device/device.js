@@ -602,73 +602,99 @@ class App extends React.Component {
 
     //传感器上下线记录
     onlinelist = (text, record, index) => {
-        getdevicelog([
-            this.state.pageNums,
-            this.state.pageNumSizes,
-            record.deviceId
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                var arr = []
-                for (var i in res.data.data.list) {
-                    if (res.data.data.list[i].dataType === 3 || res.data.data.list[i].dataType === 4) {
-                        arr.push(res.data.data.list[i])
-                    }
+        this.setState({
+            deviceId: record.deviceId
+        }, function () {
+            getdevicelog([
+                this.state.pageNums,
+                this.state.pageNumSizes,
+                record.deviceId,
+                [1, 3, 4].join(',')
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    this.setState({
+                        recordlist: res.data.data.list,
+                        recordvisible: true,
+                        sensortotal: res.data.data.total
+                    })
                 }
-                this.setState({
-                    recordlist: arr,
-                    recordvisible: true,
-                    cameratotal: arr.length
-                }, function () {
-                    if (this.state.recordlist.length > 10) {
-                        this.setState({
-                            recordpage: true
-                        })
-                    } else {
-                        this.setState({
-                            recordpage: false
-                        })
-                    }
-                })
-            }
+            });
         });
+    }
+
+    //传感器分页变化
+    sensorchange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNums: page,
+            pageNumSizes: b,
+        }, function () {
+            getdevicelog([
+                this.state.pageNums,
+                this.state.pageNumSizes,
+                this.state.deviceId,
+                [1, 3, 4].join(',')
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    this.setState({
+                        recordlist: res.data.data.list,
+                        recordvisible: true,
+                        sensortotal: res.data.data.total
+                    })
+                }
+            });
+        })
     }
 
 
     //摄像头上下线记录
     lookcamera = (text, record, index) => {
         console.log(record)
-        getdevicelog([
-            this.state.pageNum,
-            this.state.pageNumSize,
-            record.deviceId
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                var arr = []
-                for (var i in res.data.data.list) {
-                    if (res.data.data.list[i].dataType === 3 || res.data.data.list[i].dataType === 4) {
-                        arr.push(res.data.data.list[i])
-                    }
+        this.setState({
+            deviceId: record.deviceId
+        }, function () {
+            getdevicelog([
+                this.state.pageNum,
+                this.state.pageNumSize,
+                this.state.deviceId,
+                [3, 4].join(',')
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    this.setState({
+                        recordlist: res.data.data.list,
+                        camerarecord: true,
+                        cameratotal: res.data.data.total
+                    })
                 }
-                this.setState({
-                    recordlist: arr,
-                    camerarecord: true,
-                }, function () {
-                    if (this.state.recordlist.length > 10) {
-                        this.setState({
-                            recordpage: true
-                        })
-                    } else {
-                        this.setState({
-                            recordpage: false
-                        })
-                    }
-                })
-            }
-        });
+            });
+        })
+
     }
 
 
-
+    //摄像头页数变化
+    pagechange = (page, b) => {
+        console.log(page, b)
+        this.setState({
+            pageNum: page,
+            pageNumSize: b,
+        }, function () {
+            getdevicelog([
+                this.state.pageNum,
+                this.state.pageNumSize,
+                this.state.deviceId,
+                [3, 4].join(',')
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    this.setState({
+                        recordlist: res.data.data.list,
+                        camerarecord: true,
+                        cameratotal: res.data.data.total
+                    })
+                }
+            });
+        })
+    }
 
 
     render() {
@@ -952,35 +978,47 @@ class App extends React.Component {
                     <Modal
                         title="传感器上下线记录"
                         visible={this.state.recordvisible}
-                        width="400px"
+                        width="550px"
                         centered
                         footer={null}
                         onCancel={this.handleCancel}
                         closable={false}
                     >
-                        <Table
-                            dataSource={this.state.recordlist}
-                            columns={this.recordColumns}
-                            pagination={this.state.recordpage}
-                            bordered
-                        />
-
+                        <div className="modeltable">
+                            <Table
+                                dataSource={this.state.recordlist}
+                                columns={this.recordColumns}
+                                pagination={false}
+                                bordered
+                            />
+                        </div>
+                        <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
+                            <Pagination
+                                onShowSizeChange={this.onShowSizeChange}
+                                defaultCurrent={1}
+                                onChange={this.sensorchange}
+                                total={this.state.sensortotal}
+                                hideOnSinglePage={true}
+                            />
+                        </div>
                     </Modal>
                     <Modal
                         title="摄像头上下线记录"
                         visible={this.state.camerarecord}
-                        width="450px"
+                        width="550px"
                         centered
                         footer={null}
                         onCancel={this.handleCancel}
                         closable={false}
                     >
-                        <Table
-                            dataSource={this.state.recordlist}
-                            columns={this.camerarecordColumns}
-                            pagination={this.state.recordpage}
-                            bordered
-                        />
+                        <div className="modeltable">
+                            <Table
+                                dataSource={this.state.recordlist}
+                                columns={this.camerarecordColumns}
+                                pagination={false}
+                                bordered
+                            />
+                        </div>
                         <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
                             <Pagination
                                 onShowSizeChange={this.onShowSizeChange}

@@ -244,8 +244,9 @@ export const getdevicelog = params =>
     pageNum: params[0],
     pageSize: params[1],
     deviceId: params[2],
-    beginTime: params[3],
-    endTime: params[4],
+    dataType: params[3],
+    beginTime: params[4],
+    endTime: params[5],
   });
 
 

@@ -288,6 +288,37 @@ class App extends React.Component {
             {
                 title: "",
                 dataIndex: "num",
+                width: "40px",
+                render: (text, record, index) => {
+                    if (text === 1) {
+                        return (
+                            <div className="firsttitle">
+                                <span className="firstcircle">1</span>
+                            </div>
+                        )
+                    }
+                    else if (text === 2) {
+                        return (
+                            <div className="firsttitle">
+                                <span className="twocircle"> 2</span>
+                            </div>
+                        )
+                    }
+                    else if (text === 3) {
+                        return (
+                            <div className="firsttitle">
+                                <span className="threecircle"> 3</span>
+                            </div>
+                        )
+                    }
+                    else {
+                        return (
+                            <div className="firsttitle">
+                                {text}
+                            </div>
+                        )
+                    }
+                }
             },
             {
                 title: "单位名称",
@@ -299,6 +330,14 @@ class App extends React.Component {
             }, {
                 title: "告警总量",
                 dataIndex: "eventNum",
+                render: (text, record, index) => {
+                    return (
+                        <div style={{ color: '#fe8114', fontWeight: 'bold' }}>
+                            {text}
+                        </div>
+                    )
+                }
+
             }
         ];
 

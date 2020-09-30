@@ -336,7 +336,7 @@ class App extends React.Component {
                                                 height={300}
                                                 data={dv}
                                                 scale={cols}
-                                                padding={[80, 100, 80, 80]}
+                                                padding={[0, 0, 40, 0]}
                                                 forceFit
                                             >
                                                 <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
@@ -378,6 +378,7 @@ class App extends React.Component {
                                                     <Label
                                                         content="percent"
                                                         formatter={(val, item) => {
+                                                            // return `${item.point.item}  办案数：${Math.round((parseInt(val) / 100) * this.state.casetotal)}   件 : ${val} `;
                                                             return item.point.item + ": " + val;
                                                         }}
                                                     />

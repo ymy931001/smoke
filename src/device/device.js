@@ -671,6 +671,7 @@ class App extends React.Component {
                 this.state.pageNums,
                 this.state.pageNumSizes,
                 record.deviceId,
+                1,
                 [1, 3, 4].join(',')
             ]).then(res => {
                 if (res.data && res.data.message === "success") {
@@ -695,6 +696,7 @@ class App extends React.Component {
                 this.state.pageNums,
                 this.state.pageNumSizes,
                 this.state.deviceId,
+                1,
                 [1, 3, 4].join(',')
             ]).then(res => {
                 if (res.data && res.data.message === "success") {
@@ -719,6 +721,7 @@ class App extends React.Component {
                 this.state.pageNum,
                 this.state.pageNumSize,
                 this.state.deviceId,
+                2,
                 [3, 4].join(',')
             ]).then(res => {
                 if (res.data && res.data.message === "success") {
@@ -745,6 +748,7 @@ class App extends React.Component {
                 this.state.pageNum,
                 this.state.pageNumSize,
                 this.state.deviceId,
+                2,
                 [3, 4].join(',')
             ]).then(res => {
                 if (res.data && res.data.message === "success") {

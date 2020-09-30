@@ -383,6 +383,7 @@ class App extends React.Component {
                                                 onChange={this.pagechange}
                                                 total={this.state.cameratotal}
                                                 hideOnSinglePage={true}
+                                                current={this.state.pageNum}
                                             />
                                         </div>
                                     </div>
@@ -418,6 +419,7 @@ class App extends React.Component {
                                                 onChange={this.sensorpagechange}
                                                 total={this.state.sensortotal}
                                                 hideOnSinglePage={true}
+                                                current={this.state.pageNums}
                                             />
                                         </div>
                                     </div>

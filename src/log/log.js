@@ -4,10 +4,11 @@ import {
     Layout,
     Button,
     Input,
-    Cascader,
+    Select,
     Pagination,
     Tabs,
-    Modal
+    Modal,
+    DatePicker
 } from "antd";
 import { getdevicelog, getactivitylog } from '../axios';
 
@@ -16,7 +17,8 @@ import "./log.css";
 // import moment from 'moment';
 
 const { Content } = Layout;
-// const { RangePicker } = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
 // const dateFormat = 'YYYY-MM-DD';
@@ -45,11 +47,6 @@ class App extends React.Component {
             {
                 title: "设备类型",
                 dataIndex: "deviceType",
-                filters: [
-                    { text: "烟雾传感器", value: 1 },
-                    { text: "摄像头", value: 2 },
-                ],
-                onFilter: (value, record) => record.deviceType == value,  //eslint-disable-line 
                 render: (text, record, index) => {
                     if (text === 1) {
                         return (
@@ -73,13 +70,6 @@ class App extends React.Component {
             }, {
                 title: "日志类型",
                 dataIndex: "dataType",
-                filters: [
-                    { text: "心跳数据", value: 1 },
-                    { text: "报警数据", value: 2 },
-                    { text: "上电数据", value: 3 },
-                    { text: "下线数据", value: 4 },
-                ],
-                onFilter: (value, record) => record.dataType == value,  //eslint-disable-line 
                 render: (text, record, index) => {
                     return (
                         <div>
@@ -159,6 +149,9 @@ class App extends React.Component {
         getdevicelog([
             this.state.pageNum,
             this.state.pageNumSize,
+            this.state.keytext,
+            this.state.devicetype,
+            this.state.logtype,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
@@ -193,15 +186,7 @@ class App extends React.Component {
     }
 
     devicequery = () => {
-        getdevicelog([
-            this.state.keytext
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                this.setState({
-                    deviceloglist: res.data.data
-                })
-            }
-        });
+        this.devicelog()
     }
 
     //设备日志页数变化
@@ -252,6 +237,45 @@ class App extends React.Component {
         })
     }
 
+    //设备类型选择
+    devicetype = (value) => {
+        this.setState({
+            devicetype: value,
+            pageNum: 1,
+            pageNumSize: 10,
+        }, function () {
+            this.devicelog()
+        })
+    }
+
+    //日志类型选择
+    logtype = (value) => {
+        this.setState({
+            logtype: value,
+            pageNum: 1,
+            pageNumSize: 10,
+        }, function () {
+            this.devicelog()
+        })
+    }
+
+    //日志时间筛选
+    logtime = (value, b) => {
+        if (!value) {
+            this.setState({
+                begintime: null,
+                endtime: null
+            })
+        } else {
+            this.setState({
+                begintime: value[0],
+                endtime: value[1],
+            })
+        }
+
+    }
+
+
     render() {
         const nodeInfoTableColumns = this.nodeInfoTableColumns.map((col) => {
             if (!col.editable) {
@@ -294,10 +318,22 @@ class App extends React.Component {
                                 <TabPane tab="设备日志" key="1">
                                     <div className="contentmain">
                                         &nbsp;&nbsp;&nbsp;设备编号&nbsp;: &nbsp;&nbsp;&nbsp;
-                                            <Input placeholder="请输入设备编号" style={{ width: '200px', marginRight: '20px' }}
+                                            <Input placeholder="请输入设备编号" style={{ width: '150px', marginRight: '10px' }}
                                             value={this.state.keytext}
                                             onChange={this.keytext}
                                         />
+                                           &nbsp;&nbsp;&nbsp;设备类型&nbsp;: &nbsp;&nbsp;&nbsp;
+                                        <Select placeholder="请选择设备类型" style={{ width: "150px", marginRight: '10px' }} onChange={this.devicetype} value={this.state.devicetype}>
+                                            <Option value={1}>烟感</Option>
+                                            <Option value={2}>摄像头</Option>
+                                        </Select>
+                                        &nbsp;&nbsp;&nbsp;日志类型&nbsp;: &nbsp;&nbsp;&nbsp;
+                                        <Select placeholder="请选择日志类型" style={{ width: "150px", marginRight: '20px' }} onChange={this.logtype} value={this.state.logtype}>
+                                            <Option value={1}>心跳数据</Option>
+                                            <Option value={2}>报警数据</Option>
+                                            <Option value={3}>上电数据</Option>
+                                            <Option value={4}>下线数据</Option>
+                                        </Select>
                                         <Button type="primary" onClick={this.devicequery}>查询</Button>
                                         {/* 时间&nbsp;:
                                         <RangePicker
@@ -317,12 +353,13 @@ class App extends React.Component {
                                                 dataSource={this.state.deviceloglist}
                                                 columns={nodeInfoTableColumns}
                                                 pagination={false}
+                                                onChange={this.devicelogchange}
                                             />
                                         </div>
                                         <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
                                             <Pagination
                                                 onShowSizeChange={this.onShowSizeChange}
-                                                defaultCurrent={1}
+                                                current={this.state.pageNum}
                                                 onChange={this.pagechange}
                                                 total={this.state.total}
                                                 hideOnSinglePage={true}
@@ -337,18 +374,20 @@ class App extends React.Component {
                                             value={this.state.keytext}
                                             onChange={this.keytext}
                                         />
+                                        <RangePicker style={{ marginRight: '20px' }} onChange={this.logtime} />
                                         <Button type="primary" onClick={this.query}>查询</Button>
                                         <div style={{ marginTop: '20px' }}>
                                             <Table
                                                 dataSource={this.state.activelist}
                                                 columns={sensorColumns}
                                                 pagination={false}
+
                                             />
                                         </div>
                                         <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
                                             <Pagination
                                                 onShowSizeChange={this.onShowSizeChange}
-                                                defaultCurrent={1}
+                                                current={this.state.pageNums}
                                                 onChange={this.devicepagechange}
                                                 total={this.state.devicetotal}
                                                 hideOnSinglePage={true}

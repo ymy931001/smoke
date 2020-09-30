@@ -119,7 +119,7 @@ class App extends Component {
                   >
                     <a href={"http://datav.aliyuncs.com/share/ce68ba8cf5150b24f9e4e49cad95b377?unitId=4"} style={{ color: 'rgba(255, 255, 255, 0.65)' }} target="_blank">
                       <DashboardOutlined />
-                      <span>仪表盘</span>
+                      <span>数字大屏</span>
                     </a>
                   </Menu.Item>
                   {menuoption}

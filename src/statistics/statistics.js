@@ -126,6 +126,8 @@ class App extends React.Component {
                 }
                 this.setState({
                     districunit: newarr,
+                    districunitnum: parseInt(res.data.data.cenSiNum) + parseInt(res.data.data.dingHaiNum) + parseInt(res.data.data.puTuoNum)
+                        + parseInt(res.data.data.daiSanNum)
                 })
             }
         });
@@ -378,8 +380,8 @@ class App extends React.Component {
                                                     <Label
                                                         content="percent"
                                                         formatter={(val, item) => {
-                                                            // return `${item.point.item}  办案数：${Math.round((parseInt(val) / 100) * this.state.casetotal)}   件 : ${val} `;
-                                                            return item.point.item + ": " + val;
+                                                            return `${item.point.item} ${Math.round((parseInt(val) / 100) * this.state.districunitnum)} 个`;
+                                                            // return item.point.item + ": " + val;
                                                         }}
                                                     />
                                                 </Geom>

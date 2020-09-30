@@ -44,6 +44,7 @@ class App extends React.Component {
             deviceLists: JSON.parse(localStorage.getItem('unitTree'))
         };
 
+
         this.rolecolumn = [
             {
                 title: "角色",
@@ -82,98 +83,165 @@ class App extends React.Component {
             }
         ];
 
-
-        this.nodeInfoTableColumns = [
-            {
-                title: "用户名",
-                dataIndex: "userName",
-            },
-            {
-                title: "姓名",
-                dataIndex: "realName",
-            }, {
-                title: "联系电话",
-                dataIndex: "phone",
-            },
-            {
-                title: "邮箱",
-                dataIndex: "email",
-            },
-            {
-                title: "所属单位",
-                dataIndex: "unit",
-                render: (text, record, index) => {
-                    if (text === null) {
+        if (localStorage.getItem('usertype') === "1") {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "用户名",
+                    dataIndex: "userName",
+                },
+                {
+                    title: "姓名",
+                    dataIndex: "realName",
+                }, {
+                    title: "联系电话",
+                    dataIndex: "phone",
+                },
+                {
+                    title: "邮箱",
+                    dataIndex: "email",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+                {
+                    title: "角色",
+                    dataIndex: "userType",
+                    filters: [
+                        { text: "超级管理员", value: 1 },
+                        { text: "单位管理员", value: 2 },
+                        { text: "区域管理员", value: 3 },
+                        { text: "市级管理员", value: 4 },
+                    ],
+                    onFilter: (value, record) => record.userType == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
                         return (
-                            <div>
-                                无
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div>
-                                {text}
+                            <div >
+                                {rolelists[text]}
                             </div>
                         )
                     }
-                }
-            },
-            {
-                title: "角色",
-                dataIndex: "userType",
-                filters: [
-                    { text: "超级管理员", value: 1 },
-                    { text: "单位管理员", value: 2 },
-                    { text: "区域管理员", value: 3 },
-                    { text: "市级管理员", value: 4 },
-                ],
-                onFilter: (value, record) => record.userType == value,  //eslint-disable-line 
-                render: (text, record, index) => {
-                    return (
-                        <div >
-                            {rolelists[text]}
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "账号状态",
-                dataIndex: "status",
-                render: (text, record, index) => {
-                    return (
-                        <div >
-                            <Switch
-                                checked={text}
-                                checkedChildren="开启" unCheckedChildren="关闭"
-                                onChange={() => this.switchchange(text, record, index)}
-                            />
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "操作",
-                dataIndex: "gmtCreate",
+                },
+                {
+                    title: "账号状态",
+                    dataIndex: "status",
+                    render: (text, record, index) => {
+                        return (
+                            <div >
+                                <Switch
+                                    checked={text}
+                                    checkedChildren="开启" unCheckedChildren="关闭"
+                                    onChange={() => this.switchchange(text, record, index)}
+                                />
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "操作",
+                    dataIndex: "gmtCreate",
 
-                render: (text, record, index) => {
-                    return (
-                        <div>
-                            <span style={{ marginLeft: '10px' }} onClick={() => this.edit(text, record, index)}>
-                                <a><img src={require('../images/edit.png')} alt="" /></a>
-                            </span>
-                            <span style={{ marginLeft: '10px' }} onClick={() => this.accountdelete(text, record, index)}>
-                                <a><img src={require('../images/delete.png')} alt="" /></a>
-                            </span>
-                        </div>
-                    );
-                }
-            },
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span style={{ marginLeft: '10px' }} onClick={() => this.edit(text, record, index)}>
+                                    <a><img src={require('../images/edit.png')} alt="" /></a>
+                                </span>
+                                <span style={{ marginLeft: '10px' }} onClick={() => this.accountdelete(text, record, index)}>
+                                    <a><img src={require('../images/delete.png')} alt="" /></a>
+                                </span>
+                            </div>
+                        );
+                    }
+                },
 
-        ];
+            ];
+        } else {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "用户名",
+                    dataIndex: "userName",
+                },
+                {
+                    title: "姓名",
+                    dataIndex: "realName",
+                }, {
+                    title: "联系电话",
+                    dataIndex: "phone",
+                },
+                {
+                    title: "邮箱",
+                    dataIndex: "email",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+                {
+                    title: "角色",
+                    dataIndex: "userType",
+                    filters: [
+                        { text: "超级管理员", value: 1 },
+                        { text: "单位管理员", value: 2 },
+                        { text: "区域管理员", value: 3 },
+                        { text: "市级管理员", value: 4 },
+                    ],
+                    onFilter: (value, record) => record.userType == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        return (
+                            <div >
+                                {rolelists[text]}
+                            </div>
+                        )
+                    }
+                },
+            ];
+        }
+
+
     }
 
     componentWillMount() {
         document.title = "用户管理";
+        if (localStorage.getItem("usertype") === "1") {
+            this.setState({
+                typedis: 'inline-block'
+            })
+        } else {
+            this.setState({
+                typedis: 'none'
+            })
+        }
     }
 
     componentDidMount() {
@@ -674,10 +742,10 @@ class App extends React.Component {
                         <Card title="账号管理" headStyle={{ color: '#2a2a2a', fontSize: '18px' }}
                             extra={
                                 <div>
-                                    <Button type="primary" style={{ marginRight: '10px' }} onClick={this.openrole}  >
+                                    <Button type="primary" style={{ marginRight: '10px', display: this.state.typedis }} onClick={this.openrole}  >
                                         角色管理
                                     </Button>
-                                    <Button type="primary" onClick={this.addaccount}>
+                                    <Button type="primary" onClick={this.addaccount} style={{ display: this.state.typedis }} >
                                         添加账号
                                     </Button>
                                 </div>}

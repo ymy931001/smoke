@@ -118,8 +118,14 @@ class App extends React.Component {
                     "item": "岱山县",
                     "count": res.data.data.daiSanNum
                 })
+                var newarr = []
+                for (var i in arr) {
+                    if (arr[i].count != 0) {
+                        newarr.push(arr[i])
+                    }
+                }
                 this.setState({
-                    districunit: arr,
+                    districunit: newarr,
                 })
             }
         });

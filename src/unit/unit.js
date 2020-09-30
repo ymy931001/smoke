@@ -37,79 +37,145 @@ class App extends React.Component {
             typenone: "inline-block",
             deviceList: JSON.parse(localStorage.getItem('AreaTree'))
         };
-        this.nodeInfoTableColumns = [
-            {
-                title: "单位名称",
-                dataIndex: "unit",
-            }, {
-                title: "所属场景",
-                dataIndex: "unitType",
-                filters: [
-                    { text: "医院", value: 1 },
-                    { text: "酒店", value: 2 },
-                    { text: "公共场所", value: 3 },
-                    { text: "其他", value: 4 },
-                ],
-                onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
-                render: (text, record, index) => {
-                    return (
-                        <div >
-                            {scenelist[text]}
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "负责人姓名",
-                dataIndex: "userName",
-            }, {
-                title: "联系电话",
-                dataIndex: "phone",
-            },
 
-            {
-                title: "详细地址",
-                dataIndex: "address",
-            }, {
-                title: "设备数量",
-                dataIndex: "deviceQuantity",
-                render: (text, record, index) => {
-                    return (
-                        <div>
-                            <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}>
-                                <span style={{ color: '#fe8616', cursor: 'pointer' }}>{text} </span>
-                            </Tooltip>
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "创建时间",
-                dataIndex: "gmtCreate",
-                sorter: (a, b) => new Date(a) > new Date(b) ? 1 : -1,
-            },
-            {
-                title: "操作",
-                dataIndex: "gmtCreate",
-                render: (text, record, index) => {
-                    return (
-                        <div>
-                            <span onClick={() => this.edit(text, record, index)}>
-                                <a><img src={require('../images/edit.png')} alt="" /></a>
-                            </span>
-                            <span style={{ marginLeft: '10px' }} onClick={() => this.unitdelete(text, record, index)}>
-                                <a><img src={require('../images/delete.png')} alt="" /></a>
-                            </span>
-                        </div>
-                    );
-                }
-            },
+        if (localStorage.getItem('usertype') === "1") {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "单位名称",
+                    dataIndex: "unit",
+                }, {
+                    title: "所属场景",
+                    dataIndex: "unitType",
+                    filters: [
+                        { text: "医院", value: 1 },
+                        { text: "酒店", value: 2 },
+                        { text: "公共场所", value: 3 },
+                        { text: "其他", value: 4 },
+                    ],
+                    onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        return (
+                            <div >
+                                {scenelist[text]}
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "负责人姓名",
+                    dataIndex: "userName",
+                }, {
+                    title: "联系电话",
+                    dataIndex: "phone",
+                },
 
-        ];
+                {
+                    title: "详细地址",
+                    dataIndex: "address",
+                }, {
+                    title: "设备数量",
+                    dataIndex: "deviceQuantity",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}>
+                                    <span style={{ color: '#fe8616', cursor: 'pointer' }}>{text} </span>
+                                </Tooltip>
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "创建时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a) > new Date(b) ? 1 : -1,
+                },
+                {
+                    title: "操作",
+                    dataIndex: "gmtCreate",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span onClick={() => this.edit(text, record, index)}>
+                                    <a><img src={require('../images/edit.png')} alt="" /></a>
+                                </span>
+                                <span style={{ marginLeft: '10px' }} onClick={() => this.unitdelete(text, record, index)}>
+                                    <a><img src={require('../images/delete.png')} alt="" /></a>
+                                </span>
+                            </div>
+                        );
+                    }
+                },
+
+            ];
+        } else {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "单位名称",
+                    dataIndex: "unit",
+                }, {
+                    title: "所属场景",
+                    dataIndex: "unitType",
+                    filters: [
+                        { text: "医院", value: 1 },
+                        { text: "酒店", value: 2 },
+                        { text: "公共场所", value: 3 },
+                        { text: "其他", value: 4 },
+                    ],
+                    onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        return (
+                            <div >
+                                {scenelist[text]}
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "负责人姓名",
+                    dataIndex: "userName",
+                }, {
+                    title: "联系电话",
+                    dataIndex: "phone",
+                },
+
+                {
+                    title: "详细地址",
+                    dataIndex: "address",
+                }, {
+                    title: "设备数量",
+                    dataIndex: "deviceQuantity",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}>
+                                    <span style={{ color: '#fe8616', cursor: 'pointer' }}>{text} </span>
+                                </Tooltip>
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "创建时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a) > new Date(b) ? 1 : -1,
+                },
+            ];
+        }
+
     }
 
     componentWillMount() {
         document.title = "单位管理";
+        if (localStorage.getItem("usertype") === "1") {
+            this.setState({
+                typedis: 'inline'
+            })
+        } else {
+            this.setState({
+                typedis: 'none'
+            })
+        }
         this.initMap()
 
     }
@@ -167,10 +233,10 @@ class App extends React.Component {
                 var autocomplete = new AMap.Autocomplete(autoOptions);
 
                 var clickEventListener = map.on('click', function (e) {
-                  console.log(e)
-                  document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
-                  document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
-                  // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
+                    console.log(e)
+                    document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
+                    document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
+                    // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
                 });
                 var placeSearch = new AMap.PlaceSearch({
                     // city: '浙江',
@@ -431,7 +497,7 @@ class App extends React.Component {
                         <Card title="单位管理" headStyle={{ color: '#2a2a2a', fontSize: '18px' }}
                             extra={
                                 <div>
-                                    <Button type="primary" onClick={this.addunit}  >
+                                    <Button type="primary" onClick={this.addunit} style={{ display: this.state.typedis }}>
                                         添加单位
                                     </Button>
                                 </div>}

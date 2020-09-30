@@ -49,139 +49,201 @@ class App extends React.Component {
             pageNumSizes: 10,
             unitlist: [],
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
+            typedis: "none"
         };
-        this.nodeInfoTableColumns = [
-            // {
-            //     title: "设备类型",
-            //     dataIndex: "deviceType",  //1是烟感 ，2是摄像头
-            //     filters: [
-            //         { text: "烟雾传感器", value: 1 },
-            //         { text: "摄像头", value: 2 },
-            //     ],
-            //     onFilter: (value, record) => record.deviceType == value,  //eslint-disable-line 
-            //     render: (text, record, index) => {
-            //         if (text === 1) {
-            //             return (
-            //                 <div>
-            //                     烟雾传感器
-            //                 </div>
-            //             )
-            //         }
-            //         if (text === 2) {
-            //             return (
-            //                 <div>
-            //                     摄像头
-            //                 </div>
-            //             )
-            //         }
-            //     }
-            // },
-            {
-                title: "设备编号",
-                dataIndex: "deviceId",
-            },
-            {
-                title: "所属单位",
-                dataIndex: "unit",
-            },
-            {
-                title: "安装位置",
-                dataIndex: "location",
-            }, {
-                title: "设备IMEI",
-                dataIndex: "imei",
-            }, {
-                title: "信号强度",
-                dataIndex: "rssi",
-            },
-            {
-                title: "设备状态",
-                dataIndex: "statusConnect",
-                filters: [
-                    { text: "在线", value: 1 },
-                    { text: "离线", value: 0 },
-                ],
-                onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
-                render: (text, record, index) => {
-                    if (text === 1) {
-                        return (
-                            <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
-                                在线
-                            </div>
-                        )
-                    }
-                    if (text === 0) {
-                        return (
-                            <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
-                                离线
-                            </div>
-                        )
-                    }
-                }
-            }, {
-                title: "短信推送",
-                dataIndex: "sendMsg",
-                render: (text, record, index) => {
-                    return (
-                        <div >
-                            <Switch
-                                checked={text}
-                                checkedChildren="开启" unCheckedChildren="关闭"
-                                onChange={() => this.switchchange(text, record, index)}
-                            />
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "添加时间",
-                dataIndex: "gmtCreate",
-                sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
-            },
-            {
-                title: "最近连接时间",
-                dataIndex: "lastConnect",
-                sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
-                render: (text, record, index) => {
-                    if (text === null) {
-                        return (
-                            <div>
-                                无
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div>
-                                {text}
-                            </div>
-                        )
-                    }
-                }
-            },
-            {
-                title: "操作",
-                dataIndex: "gmtCreate",
-                render: (text, record, index) => {
-                    return (
-                        <div>
-                            <span onClick={() => this.sensoredit(text, record, index)}>
-                                <a><img src={require('../images/edit.png')} alt="" /></a>
-                            </span>
-                            <span style={{ marginLeft: '10px' }} onClick={() => this.devicedelete(text, record, index)}>
-                                <a><img src={require('../images/delete.png')} alt="" /></a>
-                            </span>
-                        </div>
-                    );
-                }
-            },
 
-        ];
+        if (localStorage.getItem('usertype') === "1") {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "设备编号",
+                    dataIndex: "deviceId",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                },
+                {
+                    title: "安装位置",
+                    dataIndex: "location",
+                }, {
+                    title: "设备IMEI",
+                    dataIndex: "imei",
+                }, {
+                    title: "信号强度",
+                    dataIndex: "rssi",
+                },
+                {
+                    title: "设备状态",
+                    dataIndex: "statusConnect",
+                    filters: [
+                        { text: "在线", value: 1 },
+                        { text: "离线", value: 0 },
+                    ],
+                    onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        if (text === 1) {
+                            return (
+                                <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
+                                    在线
+                                </div>
+                            )
+                        }
+                        if (text === 0) {
+                            return (
+                                <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
+                                    离线
+                                </div>
+                            )
+                        }
+                    }
+                }, {
+                    title: "短信推送",
+                    dataIndex: "sendMsg",
+                    render: (text, record, index) => {
+                        return (
+                            <div >
+                                <Switch
+                                    checked={text}
+                                    checkedChildren="开启" unCheckedChildren="关闭"
+                                    onChange={() => this.switchchange(text, record, index)}
+                                />
+                            </div>
+                        )
+                    }
+                },
+                {
+                    title: "添加时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
+                },
+                {
+                    title: "最近连接时间",
+                    dataIndex: "lastConnect",
+                    sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+                {
+                    title: "操作",
+                    dataIndex: "gmtCreate",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span onClick={() => this.sensoredit(text, record, index)}>
+                                    <a><img src={require('../images/edit.png')} alt="" /></a>
+                                </span>
+                                <span style={{ marginLeft: '10px' }} onClick={() => this.devicedelete(text, record, index)}>
+                                    <a><img src={require('../images/delete.png')} alt="" /></a>
+                                </span>
+                            </div>
+                        );
+                    }
+                },
+
+            ];
+
+        } else {
+            this.nodeInfoTableColumns = [
+                {
+                    title: "设备编号",
+                    dataIndex: "deviceId",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                },
+                {
+                    title: "安装位置",
+                    dataIndex: "location",
+                }, {
+                    title: "设备IMEI",
+                    dataIndex: "imei",
+                }, {
+                    title: "信号强度",
+                    dataIndex: "rssi",
+                },
+                {
+                    title: "设备状态",
+                    dataIndex: "statusConnect",
+                    filters: [
+                        { text: "在线", value: 1 },
+                        { text: "离线", value: 0 },
+                    ],
+                    onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        if (text === 1) {
+                            return (
+                                <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
+                                    在线
+                                </div>
+                            )
+                        }
+                        if (text === 0) {
+                            return (
+                                <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.onlinelist(text, record, index)}>
+                                    离线
+                                </div>
+                            )
+                        }
+                    }
+                },
+                {
+                    title: "添加时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
+                },
+                {
+                    title: "最近连接时间",
+                    dataIndex: "lastConnect",
+                    sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+
+            ];
+
+        }
 
 
     }
 
     componentWillMount() {
         document.title = "设备管理";
+        if (localStorage.getItem("usertype") === "1") {
+            this.setState({
+                typedis: 'inline'
+            })
+        } else {
+            this.setState({
+                typedis: 'none'
+            })
+        }
     }
 
     componentDidMount() {
@@ -775,111 +837,191 @@ class App extends React.Component {
             },
         ]
 
-        this.cameraColumns = [
-            {
-                title: "设备编号",
-                dataIndex: "deviceId",
-            },
-            {
-                title: "所属单位",
-                dataIndex: "unit",
-            },
-            {
-                title: "安装位置",
-                dataIndex: "location",
-            },
-            {
-                title: "设备状态",
-                dataIndex: "statusConnect",
-                filters: [
-                    { text: "在线", value: 1 },
-                    { text: "离线", value: 0 },
-                ],
-                onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
-                render: (text, record, index) => {
-                    if (text === 1) {
+
+        if (localStorage.getItem('usertype') === "1") {
+            this.cameraColumns = [
+                {
+                    title: "设备编号",
+                    dataIndex: "deviceId",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                },
+                {
+                    title: "安装位置",
+                    dataIndex: "location",
+                },
+                {
+                    title: "设备状态",
+                    dataIndex: "statusConnect",
+                    filters: [
+                        { text: "在线", value: 1 },
+                        { text: "离线", value: 0 },
+                    ],
+                    onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        if (text === 1) {
+                            return (
+                                <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
+                                    在线
+                                </div>
+                            )
+                        }
+                        if (text === 0) {
+                            return (
+                                <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
+                                    离线
+                                </div>
+                            )
+                        }
+                    }
+                }, {
+                    title: "实时画面",
+                    dataIndex: "realLive",
+                    render: (text, record, index) => {
                         return (
-                            <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
-                                在线
+                            <div style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.oprealLive(text, record, index)}>
+                                查看
                             </div>
                         )
                     }
-                    if (text === 0) {
+                },
+                {
+                    title: "短信推送",
+                    dataIndex: "sendMsg",
+                    render: (text, record, index) => {
                         return (
-                            <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
-                                离线
+                            <div >
+                                <Switch
+                                    checked={text}
+                                    checkedChildren="开启" unCheckedChildren="关闭"
+                                    onChange={() => this.switchchange(text, record, index)}
+                                />
                             </div>
                         )
                     }
-                }
-            }, {
-                title: "实时画面",
-                dataIndex: "realLive",
-                render: (text, record, index) => {
-                    return (
-                        <div style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.oprealLive(text, record, index)}>
-                            查看
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "短信推送",
-                dataIndex: "sendMsg",
-                render: (text, record, index) => {
-                    return (
-                        <div >
-                            <Switch
-                                checked={text}
-                                checkedChildren="开启" unCheckedChildren="关闭"
-                                onChange={() => this.switchchange(text, record, index)}
-                            />
-                        </div>
-                    )
-                }
-            },
-            {
-                title: "添加时间",
-                dataIndex: "gmtCreate",
-                sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
-            },
-            {
-                title: "最近连接时间",
-                dataIndex: "lastConnect",
-                sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
-                render: (text, record, index) => {
-                    if (text === null) {
+                },
+                {
+                    title: "添加时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
+                },
+                {
+                    title: "最近连接时间",
+                    dataIndex: "lastConnect",
+                    sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+                {
+                    title: "操作",
+                    dataIndex: "gmtCreate",
+                    render: (text, record, index) => {
                         return (
                             <div>
-                                无
+                                <span onClick={() => this.cameraedit(text, record, index)}>
+                                    <a><img src={require('../images/edit.png')} alt="" /></a>
+                                </span>
+                                <span style={{ marginLeft: '10px' }} onClick={() => this.devicedelete(text, record, index)}>
+                                    <a><img src={require('../images/delete.png')} alt="" /></a>
+                                </span>
                             </div>
-                        )
-                    } else {
+                        );
+                    }
+                },
+            ];
+        } else {
+            this.cameraColumns = [
+                {
+                    title: "设备编号",
+                    dataIndex: "deviceId",
+                },
+                {
+                    title: "所属单位",
+                    dataIndex: "unit",
+                },
+                {
+                    title: "安装位置",
+                    dataIndex: "location",
+                },
+                {
+                    title: "设备状态",
+                    dataIndex: "statusConnect",
+                    filters: [
+                        { text: "在线", value: 1 },
+                        { text: "离线", value: 0 },
+                    ],
+                    onFilter: (value, record) => record.statusConnect == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        if (text === 1) {
+                            return (
+                                <div style={{ color: '#1eb333', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
+                                    在线
+                                </div>
+                            )
+                        }
+                        if (text === 0) {
+                            return (
+                                <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
+                                    离线
+                                </div>
+                            )
+                        }
+                    }
+                }, {
+                    title: "实时画面",
+                    dataIndex: "realLive",
+                    render: (text, record, index) => {
                         return (
-                            <div>
-                                {text}
+                            <div style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.oprealLive(text, record, index)}>
+                                查看
                             </div>
                         )
                     }
-                }
-            },
-            {
-                title: "操作",
-                dataIndex: "gmtCreate",
-                render: (text, record, index) => {
-                    return (
-                        <div>
-                            <span onClick={() => this.cameraedit(text, record, index)}>
-                                <a><img src={require('../images/edit.png')} alt="" /></a>
-                            </span>
-                            <span style={{ marginLeft: '10px' }} onClick={() => this.devicedelete(text, record, index)}>
-                                <a><img src={require('../images/delete.png')} alt="" /></a>
-                            </span>
-                        </div>
-                    );
-                }
-            },
-        ];
+                },
+                {
+                    title: "添加时间",
+                    dataIndex: "gmtCreate",
+                    sorter: (a, b) => new Date(a.gmtCreate) > new Date(b.gmtCreate) ? 1 : -1,
+                },
+                {
+                    title: "最近连接时间",
+                    dataIndex: "lastConnect",
+                    sorter: (a, b) => new Date(a.lastConnect) > new Date(b.lastConnect) ? 1 : -1,
+                    render: (text, record, index) => {
+                        if (text === null) {
+                            return (
+                                <div>
+                                    无
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>
+                                    {text}
+                                </div>
+                            )
+                        }
+                    }
+                },
+            ];
+        }
+
+
 
 
         const components = {
@@ -914,9 +1056,9 @@ class App extends React.Component {
                                                     enterButton style={{ marginBottom: '20px', width: '300px' }}
                                                 />
                                             </div>
-                                            <Button type="primary" onClick={this.addcamera}  >
+                                            <Button type="primary" onClick={this.addcamera} style={{ display: this.state.typedis }} >
                                                 添加设备
-                                    </Button>
+                                            </Button>
                                         </div>
                                         <Table
                                             dataSource={this.state.cameralist}
@@ -946,7 +1088,7 @@ class App extends React.Component {
                                                     enterButton style={{ marginBottom: '20px', width: '300px' }}
                                                 />
                                             </div>
-                                            <Button type="primary" onClick={this.adddevice}  >
+                                            <Button type="primary" onClick={this.adddevice} style={{ display: this.state.typedis }} >
                                                 添加设备
                                             </Button>
                                         </div>

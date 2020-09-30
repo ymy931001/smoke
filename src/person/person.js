@@ -72,7 +72,7 @@ class journal extends Component {
                 <div className="line">
                   <span className="personl">账户类型：</span><span>  {rolelists[this.state.info]}</span>
                 </div>
-                <div className="line">
+                {/* <div className="line">
                   <span className="personl">用户名密码：</span>  <span>{this.state.password}</span>
                   <span style={{ color: '#fe8616', marginLeft: '20px' }} onClick={this.showModal}>修改</span>
                   <Modal
@@ -102,10 +102,10 @@ class journal extends Component {
                     <p>新密码:<Input placeholder="请输入新密码" style={{ width: '70%', marginLeft: '10px', marginRight: '10px' }} id="passwordnow" type="password" autocomplete="off" /></p>
                     确认密码:<Input placeholder="请再次输入新密码" style={{ width: '70%', marginLeft: '10px', marginRight: '10px' }} id="confpassword" type="password" autocomplete="off" />
                   </Modal>
-                </div>
+                </div> */}
                 <div className="line">
                   <span className="personl">手机号码： </span> <span>{this.state.phone}</span>
-                  <span style={{ color: '#fe8616', marginLeft: '20px' }} onClick={this.phoneModal} >修改</span>
+                  {/* <span style={{ color: '#fe8616', marginLeft: '20px' }} onClick={this.phoneModal} >修改</span> */}
                   <Modal
                     title="修改手机号"
                     visible={this.state.phoneamend}
@@ -141,7 +141,7 @@ class journal extends Component {
                 </div>
                 <div className="line">
                   <span className="personl">邮箱： </span> <span>{this.state.email}</span>
-                  <span style={{ color: '#fe8616', marginLeft: '20px' }} onClick={this.emailModal}>修改</span>
+                  {/* <span style={{ color: '#fe8616', marginLeft: '20px' }} onClick={this.emailModal}>修改</span> */}
                   <Modal
                     title="修改邮箱"
                     visible={this.state.emailamend}

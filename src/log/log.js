@@ -94,7 +94,7 @@ class App extends React.Component {
                 render: (text, record, index) => {
                     return (
                         <div>
-                            <span style={{ color: '#fe8616' }}>查看</span>
+                            <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.lookdevicelog(text, record, index)}>查看</span>
                         </div>
                     )
                 }
@@ -123,7 +123,7 @@ class App extends React.Component {
                 render: (text, record, index) => {
                     return (
                         <div>
-                            <span style={{ color: '#fe8616' }}>查看</span>
+                            <span style={{ color: '#fe8616', cursor: 'pointer' }}>查看</span>
                         </div>
                     )
                 }
@@ -150,6 +150,8 @@ class App extends React.Component {
         this.activitylog()
 
     }
+
+
 
     //获取设备日志
     devicelog = () => {
@@ -201,7 +203,7 @@ class App extends React.Component {
         });
     }
 
-    //摄像头页数变化
+    //设备日志页数变化
     pagechange = (page, b) => {
         console.log(page, b)
         this.setState({
@@ -212,7 +214,7 @@ class App extends React.Component {
         })
     }
 
-    //传感器页数变化
+    //操作日志页数变化
     devicepagechange = (page, b) => {
         console.log(page, b)
         this.setState({
@@ -222,6 +224,9 @@ class App extends React.Component {
             this.activitylog()
         })
     }
+
+    //查看设备日志内容
+    lookdevicelog
 
 
     render() {

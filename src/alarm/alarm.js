@@ -34,6 +34,7 @@ class App extends React.Component {
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
             imglist: [],
+            videourl: undefined,
         };
         this.nodeInfoTableColumns = [
             {
@@ -216,10 +217,12 @@ class App extends React.Component {
     handleCancel = () => {
         this.setState({
             videovisible: false,
-        }, function () {
-            window.location.reload()
+            videourl: undefined,
         })
     }
+
+
+
 
     handleCancels = () => {
         this.setState({
@@ -261,7 +264,7 @@ class App extends React.Component {
                 if (res.data.data != undefined) {
                     this.setState({
                         videovisible: true,
-                        videourl: "http://smoke.terabits.cn" + res.data.data.replace("C:", "")
+                        videourl: "http://smoke.terabits.cn" + res.data.data + "?t=20190201"
                     })
                 }
             } else {
@@ -433,11 +436,9 @@ class App extends React.Component {
                         width="80%"
                         centered
                         onCancel={this.handleCancel}
-                        // closable={false}
                         footer={null}
                     >
-                        <video width="100%" controls="controls" type="video/mp4" autoPlay="autoplay" loop="loop" id="example-video" >
-                            <source src={this.state.videourl} type='video/mp4' autoPlay="autoplay" loop="loop" />
+                        <video width="100%" controls="controls" type="video/mp4" autoPlay="autoplay" loop="loop" id="example-video" src={this.state.videourl}  >
                         </video>
                     </Modal>
                     <Modal

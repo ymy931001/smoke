@@ -6,7 +6,8 @@ import {
     Input,
     Cascader,
     Pagination,
-    Tabs
+    Tabs,
+    Modal
 } from "antd";
 import { getdevicelog, getactivitylog } from '../axios';
 
@@ -123,7 +124,7 @@ class App extends React.Component {
                 render: (text, record, index) => {
                     return (
                         <div>
-                            <span style={{ color: '#fe8616', cursor: 'pointer' }}>查看</span>
+                            <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.lookpersonlog(text, record, index)}>查看</span>
                         </div>
                     )
                 }
@@ -226,8 +227,30 @@ class App extends React.Component {
     }
 
     //查看设备日志内容
-    lookdevicelog
+    lookdevicelog = (text, record, index) => {
+        this.setState({
+            devicelogvisible: true,
+            devicelogcont: record.msg
+        })
+    }
 
+    //查看操作日志内容
+    lookpersonlog = (text, record, index) => {
+        console.log(record)
+        this.setState({
+            personlogvisible: true,
+            personlogcont: record.content
+        })
+    }
+
+
+    //关闭弹窗
+    handleCancel = () => {
+        this.setState({
+            devicelogvisible: false,
+            personlogvisible: false
+        })
+    }
 
     render() {
         const nodeInfoTableColumns = this.nodeInfoTableColumns.map((col) => {
@@ -309,16 +332,7 @@ class App extends React.Component {
                                 </TabPane>
                                 <TabPane tab="操作日志" key="2">
                                     <div className="contentmain">
-                                        &nbsp;&nbsp;&nbsp;设备位置&nbsp;: &nbsp;&nbsp;&nbsp;
-                                        <Cascader
-                                            fieldNames={{ label: 'name', value: 'adcode' }}
-                                            options={this.state.deviceList}
-                                            onChange={this.addresschange}
-                                            value={this.state.addresslist}
-                                            changeOnSelect
-                                            style={{ width: "350px", marginRight: '20px' }}
-                                            placeholder="选择酒店" />
-                                                关键字搜索&nbsp;: &nbsp;&nbsp;&nbsp;
+                                        关键字搜索&nbsp;: &nbsp;&nbsp;&nbsp;
                                             <Input placeholder="请输入关键字" style={{ width: '200px', marginRight: '20px' }}
                                             value={this.state.keytext}
                                             onChange={this.keytext}
@@ -343,6 +357,32 @@ class App extends React.Component {
                                     </div>
                                 </TabPane>
                             </Tabs>
+                            <Modal
+                                title="设备日志内容"
+                                visible={this.state.devicelogvisible}
+                                onCancel={this.handleCancel}
+                                // okText="保存"
+                                width="400px"
+                                mask={false}
+                                closable={false}
+                                footer={null}
+                                centered
+                            >
+                                {this.state.devicelogcont}
+                            </Modal>
+                            <Modal
+                                title="操作日志内容"
+                                visible={this.state.personlogvisible}
+                                onCancel={this.handleCancel}
+                                // okText="保存"
+                                width="400px"
+                                mask={false}
+                                closable={false}
+                                footer={null}
+                                centered
+                            >
+                                {this.state.personlogcont}
+                            </Modal>
                         </div>
                     </Content>
                 </Layout>

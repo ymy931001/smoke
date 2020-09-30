@@ -6,7 +6,7 @@ import {
     Input,
     Cascader,
     Pagination,
-    Tabs, message, Modal
+    Tabs, message, Modal, Carousel
 } from "antd";
 import { getalarmList, getAlarmVideoUrl } from '../axios';
 
@@ -33,6 +33,7 @@ class App extends React.Component {
             pageNumSizes: 10,
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
+            imglist: [],
         };
         this.nodeInfoTableColumns = [
             {
@@ -194,7 +195,6 @@ class App extends React.Component {
 
 
     lookimg = (text, record, index) => {
-        console.log(JSON.parse(record.images))
         if (record.images === null) {
             message.error('暂无图片')
         } else {
@@ -203,7 +203,9 @@ class App extends React.Component {
             } else {
                 this.setState({
                     imgvisible: true,
-                    alarmimg: JSON.parse(record.images)[0]
+                    imglist: JSON.parse(record.images)
+                }, function () {
+                    console.log(this.state.imglist)
                 })
             }
         }
@@ -291,6 +293,11 @@ class App extends React.Component {
     }
 
     render() {
+        const imgoption = this.state.imglist.map((img) =>
+            <a href={img} target="_blank">
+                <img src={img} alt="" style={{ width: '100%' }} />
+            </a>
+        );
         const nodeInfoTableColumns = this.nodeInfoTableColumns.map((col) => {
             if (!col.editable) {
                 return col;
@@ -435,14 +442,15 @@ class App extends React.Component {
                         title="抓拍图片"
                         visible={this.state.imgvisible}
                         width="50%"
+                        // style={{height:'300px',overflow:'auto'}}
                         centered
                         onCancel={this.handleCancels}
                         // closable={false}
                         footer={null}
                     >
-                        <a href={this.state.alarmimg} target="_blank">
-                            <img src={this.state.alarmimg} alt="" style={{ width: '100%' }} />
-                        </a>
+                        {/* <Carousel effect="fade"  autoplay> */}
+                        {imgoption}
+                        {/* </Carousel> */}
                     </Modal>
                 </Layout>
             </Layout >

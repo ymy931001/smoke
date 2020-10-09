@@ -46,7 +46,11 @@ class App extends React.Component {
             device_ip: null,
             typenone: "inline-block",
             pageNum: 1,
+            datetype: 1,
             pageNumSize: 10,
+            weekback: 'orange',
+            yearback: '#fe8616',
+            monthback: '#fe8616',
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
         };
@@ -81,24 +85,9 @@ class App extends React.Component {
             }
         });
 
-        getDeviceAlarmList([
-            1
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                var arr = []
-                for (var i in res.data.data) {
-                    if (res.data.data[i].deviceType === 2) {
-                        res.data.data[i].deviceType = "摄像头告警"
-                    }
-                    if (res.data.data[i].deviceType === 1) {
-                        res.data.data[i].deviceType = "传感器告警"
-                    }
-                }
-                this.setState({
-                    devicealarmlist: res.data.data,
-                })
-            }
-        });
+        this.getdevicealarmlist()
+
+
 
         getDistrictUnit([
 
@@ -127,7 +116,10 @@ class App extends React.Component {
                 this.setState({
                     districunit: newarr,
                     districunitnum: parseInt(res.data.data.cenSiNum) + parseInt(res.data.data.dingHaiNum) + parseInt(res.data.data.puTuoNum)
-                        + parseInt(res.data.data.daiSanNum)
+                        + parseInt(res.data.data.daiSanNum),
+                    selectname: '总计',
+                    selectcount: parseInt(res.data.data.cenSiNum) + parseInt(res.data.data.dingHaiNum) + parseInt(res.data.data.puTuoNum)
+                        + parseInt(res.data.data.daiSanNum),
                 })
             }
         });
@@ -137,15 +129,82 @@ class App extends React.Component {
 
     }
 
+    getdevicealarmlist = () => {
+        getDeviceAlarmList([
+            this.state.datetype
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
 
+                if (this.state.datetype === 3) {
+                    for (var i in res.data.data) {
+                        if (res.data.data[i].deviceType === 2) {
+                            res.data.data[i].deviceType = "摄像头告警"
+                        }
+                        if (res.data.data[i].deviceType === 1 || res.data.data[i].deviceType === "1") {
+                            res.data.data[i].deviceType = "传感器告警"
+                        }
+                        res.data.data[i].alarmTime = res.data.data[i].alarmTime.substring(0, 7)
+                    }
+                    var arr = res.data.data
+                    arr.sort(function (a, b) {
+                        return a.alarmTime < b.alarmTime ? -1 : 1
+                    });
+                } else {
+                    for (var i in res.data.data) {
+                        if (res.data.data[i].deviceType === 2) {
+                            res.data.data[i].deviceType = "摄像头告警"
+                        }
+                        if (res.data.data[i].deviceType === 1) {
+                            res.data.data[i].deviceType = "传感器告警"
+                        }
+                    }
+                }
+                this.setState({
+                    devicealarmlist: res.data.data,
+                })
+            }
+        });
+    }
 
+    monthdate = () => {
+        this.setState({
+            datetype: 2,
+            monthback: 'orange',
+            yearback: '#fe8616',
+            weekback: '#fe8616',
+        }, function () {
+            this.getdevicealarmlist()
+        })
+    }
+
+    yeardate = () => {
+        this.setState({
+            datetype: 3,
+            yearback: 'orange',
+            monthback: '#fe8616',
+            weekback: '#fe8616',
+        }, function () {
+            this.getdevicealarmlist()
+        })
+    }
+
+    weekdate = () => {
+        this.setState({
+            weekback: 'orange',
+            yearback: '#fe8616',
+            monthback: '#fe8616',
+            datetype: 1
+        }, function () {
+            this.getdevicealarmlist()
+        })
+    }
 
 
     render() {
 
         const { DataView } = DataSet;
         const { Html } = Guide;
-
+        const { selected, selectedIdx } = this.state;
         const dv = new DataView();
         dv.source(this.state.districunit).transform({
             type: "percent",
@@ -173,7 +232,7 @@ class App extends React.Component {
             {
                 title: "",
                 dataIndex: "num",
-                width: "40px",
+                width: "25px",
                 render: (text, record, index) => {
                     if (text === 1) {
                         return (
@@ -236,7 +295,7 @@ class App extends React.Component {
                         </div>
                         <div>
                             <Row gutter={24}>
-                                <Col className="gutter-row" span={18}>
+                                <Col className="gutter-row" span={17}>
                                     <Row gutter={24}>
                                         <Col className="gutter-row" span={8}>
                                             <div className="dashboard">
@@ -289,7 +348,20 @@ class App extends React.Component {
                                     </Row>
                                     <div className="tongji">
                                         <div className="righthead">
-                                            设备告警统计
+                                            <div>
+                                                设备告警统计
+                                            </div>
+                                            <div>
+                                                <Button type="primary" style={{ marginRight: '10px', background: this.state.weekback }} onClick={this.weekdate}  >
+                                                    近一周
+                                    </Button>
+                                                <Button type="primary" onClick={this.monthdate} style={{ marginRight: '10px', background: this.state.monthback }}>
+                                                    近一月
+                                    </Button>
+                                                <Button type="primary" onClick={this.yeardate} style={{ background: this.state.yearback }} >
+                                                    近一年
+                                    </Button>
+                                            </div>
                                         </div>
                                         <div>
                                             <Chart height={470} data={this.state.devicealarmlist} scale={colss} forceFit>
@@ -328,7 +400,7 @@ class App extends React.Component {
                                         </div>
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={7}>
                                     <div className="areastatistics">
                                         <div className="righthead">
                                             区域所属单位统计
@@ -338,8 +410,18 @@ class App extends React.Component {
                                                 height={300}
                                                 data={dv}
                                                 scale={cols}
-                                                padding={[0, 0, 40, 0]}
+                                                // padding={[0, 0, 40, 0]}
+                                                padding="auto"
                                                 forceFit
+                                                // 设置选中
+                                                onPlotClick={ev => {
+                                                    console.log(ev);
+                                                    // this.setState({
+                                                    //     selectname: ev.data._origin.item,
+                                                    //     selectcount: ev.data._origin.count,
+                                                    // }) 
+
+                                                }}
                                             >
                                                 <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
                                                 <Axis name="percent" />
@@ -351,6 +433,13 @@ class App extends React.Component {
                                                     itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
                                                 />
                                                 <Guide>
+                                                    <Guide.Text
+                                                        top
+                                                        position={['50%', '50%']}
+                                                        content={`${this.state.selectname}${this.state.selectcount}个`}
+                                                        style={{ textAlign: 'center', fontSize: 20 }}
+                                                    // className="circlestyle"
+                                                    />
                                                     {/* <Html
                                                         position={["50%", "50%"]}
                                                         html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>
@@ -398,7 +487,7 @@ class App extends React.Component {
                                                 dataSource={this.state.unitalarmlist}
                                                 columns={this.unitalarmColumns}
                                                 pagination={false}
-                                            // scroll={{ y: 270 }}
+                                                // scroll={{ y: 270 }}
                                             />
                                         </div>
                                     </div>

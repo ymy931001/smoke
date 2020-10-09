@@ -6,16 +6,17 @@ import {
     Input,
     Cascader,
     Pagination,
-    Tabs, message, Modal, Carousel
+    Tabs, message, Modal, DatePicker
 } from "antd";
 import { getalarmList, getAlarmVideoUrl } from '../axios';
 
 
 import "./alarm.css";
-// import moment from 'moment';
+import moment from 'moment';
 
 const { Content } = Layout;
 // const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
 // const dateFormat = 'YYYY-MM-DD';
@@ -129,6 +130,8 @@ class App extends React.Component {
             this.state.keytext,
             this.state.pageNum,
             this.state.pageNumSize,
+            this.state.begintime,
+            this.state.endtime
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
@@ -295,6 +298,23 @@ class App extends React.Component {
         })
     }
 
+    //报警时间筛选
+    alarmtime = (value, b) => {
+        if (!value) {
+            this.setState({
+                begintime: null,
+                endtime: null
+            })
+        } else {
+            this.setState({
+                begintime: moment(value[0]).format("YYYY-MM-DD 00:00:00"),
+                endtime: moment(value[1]).format("YYYY-MM-DD 23:59:59"),
+            })
+        }
+
+    }
+
+
     render() {
         const imgoption = this.state.imglist.map((img) =>
             <a href={img} target="_blank">
@@ -355,7 +375,19 @@ class App extends React.Component {
                                             value={this.state.keytext}
                                             onChange={this.keytext}
                                         />
-                                        <Button type="primary" onClick={this.cameraquery}>查询</Button>
+
+                                        <div style={{ marginTop: '20px' }}>
+                                            &nbsp;&nbsp;&nbsp;告警时间&nbsp;: &nbsp;&nbsp;&nbsp;
+                                            <RangePicker style={{ marginRight: '20px' }}
+                                                onChange={this.alarmtime}
+
+                                                ranges={{
+                                                    "今日": [moment(), moment()],
+                                                    '本月': [moment().startOf('month'), moment().endOf('month')],
+                                                }}
+                                            />
+                                            <Button type="primary" onClick={this.cameraquery}>查询</Button>
+                                        </div>
                                         {/* 时间&nbsp;:
                                         <RangePicker
                                             style={{ marginLeft: '20px', marginRight: '20px', width: '300px' }}

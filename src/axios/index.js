@@ -32,6 +32,8 @@ export const getalarmList = params =>
     deviceId: params[6],
     pageNum: params[7],
     pageSize: params[8],
+    beginTime: params[9],
+    endTime: params[10],
   });
 
 

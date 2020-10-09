@@ -350,14 +350,16 @@ class App extends React.Component {
                                                     showTitle={false}
                                                     itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
                                                 />
-                                                {/* <Guide>
-                                                    <Html
+                                                <Guide>
+                                                    {/* <Html
                                                         position={["50%", "50%"]}
-                                                        html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>主机<br><span style=&quot;color:#262626;font-size:2.5em&quot;>200</span>台</div>"
+                                                        html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>
+                                                        <span style=&quot;color:#262626;font-size:2.5em&quot;>200</span>
+                                                        台</div>"
                                                         alignX="middle"
                                                         alignY="middle"
-                                                    />
-                                                </Guide> */}
+                                                    /> */}
+                                                </Guide>
                                                 <Geom
                                                     type="intervalStack"
                                                     position="percent"
@@ -365,10 +367,9 @@ class App extends React.Component {
                                                     tooltip={[
                                                         "item*percent",
                                                         (item, percent) => {
-                                                            percent = (percent * 100).toFixed(2) + "%";
                                                             return {
                                                                 name: item,
-                                                                value: percent
+                                                                value: ` ${Math.round((percent.toFixed(2)) * this.state.districunitnum)} 个`
                                                             };
                                                         }
                                                     ]}
@@ -377,13 +378,13 @@ class App extends React.Component {
                                                         stroke: "#fff"
                                                     }}
                                                 >
-                                                    <Label
+                                                    {/* <Label
                                                         content="percent"
                                                         formatter={(val, item) => {
                                                             return `${item.point.item} ${Math.round((parseInt(val) / 100) * this.state.districunitnum)} 个`;
                                                             // return item.point.item + ": " + val;
                                                         }}
-                                                    />
+                                                    /> */}
                                                 </Geom>
                                             </Chart>
                                         </div>
@@ -397,7 +398,7 @@ class App extends React.Component {
                                                 dataSource={this.state.unitalarmlist}
                                                 columns={this.unitalarmColumns}
                                                 pagination={false}
-                                                scroll={{ y: 270 }}
+                                            // scroll={{ y: 270 }}
                                             />
                                         </div>
                                     </div>

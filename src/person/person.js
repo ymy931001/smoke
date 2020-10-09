@@ -65,7 +65,7 @@ class journal extends Component {
           <Layout style={{ background: 'white', padding: '20px', marginTop: '20px' }}>
             <Content >
               <div>
-                <div style={{ fontSize: "20px", marginBottom: '50px' }}>基本信息</div>
+                <div style={{ fontSize: "18px", marginBottom: '50px' }}>基本信息</div>
                 <div className="line">
                   <span className="personl">用户名：</span><span>{this.state.username}</span>
                 </div>
@@ -160,9 +160,11 @@ class journal extends Component {
                 </div>
                 <div className="line">
                   <span className="personl">用户手册：</span>
-                  <a href="" style={{ display: 'inline-block', color: '#fe8616' }}>
+                  {/* <a href="" style={{ display: 'inline-block', color: '#fe8616' }}> */}
+                  <span style={{ display: 'inline-block', color: '#fe8616' }}>
                     舟山市违禁吸烟管理平台使用手册
-                  </a>
+                    </span>
+                  {/* </a> */}
                 </div>
               </div>
             </Content>

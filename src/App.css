@@ -74,10 +74,11 @@ body{
   margin-top: 20px;
   min-height: 85vh;
   margin-right: 20px;
+  background: white;
 }
 
 .ant-layout-sider{
-  min-height: 85vh;
+  min-height: 80vh;
   background: white;
   width: 240px !important;
   max-width: 240px !important;
@@ -119,4 +120,51 @@ body{
   background:#fe8616;
   border:1px solid #fe8616;
   opacity: 0.8;
+}
+
+
+
+@media screen and (max-width: 1525px) {
+
+  .ant-menu-dark.ant-menu-inline .ant-menu-item, .ant-menu-submenu-title{
+    height: 45px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding-left: 45px !important;
+  }
+  
+  
+
+  .bodyleft{
+    min-height: 80vh;
+  }
+
+  .ant-layout-sider{
+    min-height: 80vh;
+    background: white;
+    width: 200px !important;
+    max-width: 200px !important;
+    min-width: 200px !important;
+    height: 45px;
+  }
+
+  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background: url(./back2.png) no-repeat;
+    width: 210px !important;
+    max-width: 210px !important;
+    min-width: 210px !important;
+    padding-left: 45px !important; 
+  }
+
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    padding: 12px 5px;
+  }
+}
+
+
+@media screen and (max-width: 1450px) {
+  .ant-table-tbody > tr > td{
+    font-size: 12px !important;
+  }
 }

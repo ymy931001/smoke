@@ -111,8 +111,8 @@ class App extends Component {
                 <Menu theme="dark"
                   onClick={this.menuClick}
                   mode="inline"
-                  defaultSelectedKeys={'2'}
-                  selectedKeys={[!localStorage.getItem("menuid") ? "2" : localStorage.getItem("menuid")]}
+                  defaultSelectedKeys={'3'}
+                  selectedKeys={localStorage.getItem("menuid")}
                 >
                   <Menu.Item key="0"
                     style={{ display: this.state.datavdis }}

@@ -14,7 +14,7 @@ import { getdevicelog, getactivitylog } from '../axios';
 
 
 import "./log.css";
-// import moment from 'moment';
+import moment from 'moment';
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -167,6 +167,8 @@ class App extends React.Component {
         getactivitylog([
             this.state.pageNums,
             this.state.pageNumSizes,
+            this.state.begintime,
+            this.state.endtime
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
@@ -188,6 +190,11 @@ class App extends React.Component {
     devicequery = () => {
         this.devicelog()
     }
+
+    query = () => {
+        this.activitylog()
+    }
+
 
     //设备日志页数变化
     pagechange = (page, b) => {
@@ -268,8 +275,8 @@ class App extends React.Component {
             })
         } else {
             this.setState({
-                begintime: value[0],
-                endtime: value[1],
+                begintime: moment(value[0]).format("YYYY-MM-DD 00:00:00"),
+                endtime: moment(value[1]).format("YYYY-MM-DD 23:59:59"),
             })
         }
 
@@ -374,7 +381,13 @@ class App extends React.Component {
                                             value={this.state.keytext}
                                             onChange={this.keytext}
                                         />
-                                        <RangePicker style={{ marginRight: '20px' }} onChange={this.logtime} />
+                                        <RangePicker style={{ marginRight: '20px' }}
+                                            onChange={this.logtime}
+                                            ranges={{
+                                                "今日": [moment(), moment()],
+                                                '本月': [moment().startOf('month'), moment().endOf('month')],
+                                            }}
+                                        />
                                         <Button type="primary" onClick={this.query}>查询</Button>
                                         <div style={{ marginTop: '20px' }}>
                                             <Table

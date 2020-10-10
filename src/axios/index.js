@@ -236,6 +236,8 @@ export const getactivitylog = params =>
     access_token: localStorage.getItem('token'),
     pageNum: params[0],
     pageSize: params[1],
+    beginTime: params[2],
+    endTime: params[3],
   });
 
 

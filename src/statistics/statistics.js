@@ -53,6 +53,8 @@ class App extends React.Component {
             monthback: '#fe8616',
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
+            selectname: null,
+            selectcount: null,
         };
 
     }
@@ -487,7 +489,7 @@ class App extends React.Component {
                                                 dataSource={this.state.unitalarmlist}
                                                 columns={this.unitalarmColumns}
                                                 pagination={false}
-                                                // scroll={{ y: 270 }}
+                                            // scroll={{ y: 270 }}
                                             />
                                         </div>
                                     </div>

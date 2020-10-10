@@ -37,21 +37,24 @@ function requireAuthentication(Component) {
       const token = localStorage.getItem("token");
       const reg = token ? true : null;
       if (reg) {
-        //有token，重置flag
-        this.setState({ flag: true });
+        // //有token，重置flag
+        // this.setState({ flag: true });
+        // window.location.href = "/app/alarm";
       } else {
-        let platform = localStorage.getItem('platform')
-        console.log(platform)
-        if (platform) {
-          window.location.href = "/?" + platform;
-          localStorage.removeItem('platform')
-        } else {
-          window.location.href = "/";
-        }
+        window.location.href = "/";
+        // let platform = localStorage.getItem('platform')
+        // console.log(platform)
+        // if (platform) {
+        //   window.location.href = "/?" + platform;
+        //   localStorage.removeItem('platform')
+        // } else {
+        //   window.location.href = "/";
+        // }
       }
     }
     render() {
-      return this.state.flag ? <Component {...this.props} /> : null;
+      // return   this.state.flag ? <Component {...this.props} /> : null;
+      return <Component {...this.props} />
     }
   }
   return AuthenticatedComponent;

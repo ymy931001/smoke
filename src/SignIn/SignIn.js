@@ -41,7 +41,7 @@ class SignIn extends Component {
           localStorage.setItem('token', res.data.data.access_token);
           localStorage.setItem('usertype', res.data.data.type);
           localStorage.setItem('realname', res.data.data.realname);
-          localStorage.setItem("currenttimes", new Date().getTime());
+          localStorage.setItem('menuid', 3)
           localStorage.setItem("menulist", JSON.stringify(res.data.data.menu));
           localStorage.setItem("unitTree", JSON.stringify(res.data.data.unitTree[0].children));
           localStorage.setItem("AreaTree", JSON.stringify(res.data.data.AreaTree[0].children));
@@ -100,7 +100,6 @@ class SignIn extends Component {
           localStorage.setItem('usertype', res.data.data.type);
           localStorage.setItem('realname', res.data.data.realname);
           localStorage.setItem('menuid', 3)
-          localStorage.setItem("currenttimes", new Date().getTime());
           localStorage.setItem("menulist", JSON.stringify(res.data.data.menu));
           localStorage.setItem("unitTree", JSON.stringify(res.data.data.unitTree[0].children));
           localStorage.setItem("AreaTree", JSON.stringify(res.data.data.AreaTree[0].children));

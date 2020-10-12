@@ -114,7 +114,7 @@ class App extends Component {
                   defaultSelectedKeys={'3'}
                   selectedKeys={localStorage.getItem("menuid")}
                 >
-                  <Menu.Item key="0"
+                  <Menu.Item key="100"
                     style={{ display: this.state.datavdis }}
                   >
                     <a href={"http://datav.aliyuncs.com/share/ce68ba8cf5150b24f9e4e49cad95b377?unitId=4"} style={{ color: 'rgba(255, 255, 255, 0.65)' }} target="_blank">

@@ -16,7 +16,40 @@ class SignIn extends Component {
 
   }
   componentDidMount = () => {
-
+    let loginurl = window.location.href;
+    loginurl = loginurl.split('?==');
+    console.log(loginurl)
+    if (loginurl.length > 1) {
+      let loginurls = loginurl[1].split('&')
+      http.defaults.headers.get['Content-Type'] = "application/x-www-form-urlencoded"
+      http.get(url + '/login?username=' + loginurls[0] + '&password=' + loginurl[2] + '&type=user&grant_type=password', {
+        auth: {
+          username: "webApp",
+          password: 'webApp',
+        }
+      }).then(res => {
+        if (res.data.status === 1003) {
+          message.error("用户名不存在！");
+        }
+        if (res.data.status === 1004) {
+          message.error("密码错误");
+        }
+        if (res.data.status === -1) {
+          message.error("账号已禁用");
+        }
+        if (res.data.status === 1) {
+          localStorage.setItem('token', res.data.data.access_token);
+          localStorage.setItem('usertype', res.data.data.type);
+          localStorage.setItem('realname', res.data.data.realname);
+          localStorage.setItem("currenttimes", new Date().getTime());
+          localStorage.setItem("menulist", JSON.stringify(res.data.data.menu));
+          localStorage.setItem("unitTree", JSON.stringify(res.data.data.unitTree[0].children));
+          localStorage.setItem("AreaTree", JSON.stringify(res.data.data.AreaTree[0].children));
+          localStorage.setItem("AreaTree", JSON.stringify(res.data.data.AreaTree[0].children));
+          window.location.href = '/app/alarm';
+        }
+      })
+    }
   };
 
 

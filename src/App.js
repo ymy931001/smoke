@@ -84,8 +84,6 @@ class App extends Component {
 
 
   render() {
-    console.log(icon[1])
-    // console.log(this.state.menulist)
     const menuoption = this.state.menulist.map((province) =>
       <Menu.Item key={province.id}
       >

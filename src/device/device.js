@@ -381,6 +381,7 @@ class App extends React.Component {
             videovisible: false,
             videourl: undefined,
         })
+        // this.getcameraList()
         window.location.reload()
     }
 

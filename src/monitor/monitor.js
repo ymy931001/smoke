@@ -39,7 +39,7 @@ class App extends React.Component {
 
     componentDidMount() {
         // var ws = new WebSocket("ws://121.41.5.169:9099/websocket/websocket");
-        var ws = new WebSocket("ws://192.168.3.9:8088/zs/smoke/websocket/monitor");
+        var ws = new WebSocket("ws://47.98.110.30:8088/zs/smoke/websocket/monitor");
 
         ws.onopen = function () {
             // ws.send("发送数据");

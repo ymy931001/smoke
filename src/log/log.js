@@ -135,22 +135,6 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        // var ws = new WebSocket("ws://121.41.5.169:9099/websocket/websocket");
-        var ws = new WebSocket("ws://192.168.1.227:8888/websocket/logging");
-
-        ws.onopen = function () {
-            ws.send("发送数据");
-            alert("数据发送中...");
-        };
-        ws.onmessage = function (evt) {
-            var received_msg = evt.data;
-            alert("数据已接收...");
-        };
-        // ws.onclose = function () {
-        //     // 关闭 websocket
-        //     alert("连接已关闭...");
-        // };
-
         this.devicelog()
 
         this.activitylog()

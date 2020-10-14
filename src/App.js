@@ -7,7 +7,7 @@ import {
   ConfigProvider
 } from "antd";
 import { Route, Switch, Link } from 'react-router-dom';
-import { DashboardOutlined, PieChartOutlined, AlertOutlined, BankOutlined, LaptopOutlined, UserOutlined, ReadOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { DashboardOutlined, PieChartOutlined, AlertOutlined, BankOutlined, LaptopOutlined, UserOutlined, ReadOutlined, UsergroupDeleteOutlined, CompassOutlined, AlignCenterOutlined } from '@ant-design/icons';
 import alarm from "./alarm/alarm";
 import unit from "./unit/unit";
 import device from "./device/device";
@@ -15,6 +15,8 @@ import user from "./user/user";
 import log from "./log/log";
 import person from "./person/person";
 import statistics from "./statistics/statistics";
+import monitor from "./monitor/monitor";
+import logging from "./logging/logging";
 import Headers from './headers';
 import moment from 'moment';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
@@ -31,7 +33,9 @@ const icon = {
   5: <BankOutlined />,
   4: <UsergroupDeleteOutlined />,
   10: < UserOutlined />,
-  9: <ReadOutlined />
+  9: <ReadOutlined />,
+  11: <CompassOutlined />,
+  18: <AlignCenterOutlined />
 }
 
 const path = {
@@ -41,7 +45,9 @@ const path = {
   5: '/app/unit',
   4: '/app/user',
   10: '/app/person',
-  9: '/app/log'
+  9: '/app/log',
+  11: '/app/monitor',
+  18: '/app/logging',
 }
 
 class App extends Component {
@@ -78,7 +84,9 @@ class App extends Component {
   }
 
   menuClick = e => {
+    console.log(e.key)
     localStorage.setItem("menuid", e.key)
+    console.log(localStorage.getItem("menuid"))
   };
 
 
@@ -109,7 +117,7 @@ class App extends Component {
                 <Menu theme="dark"
                   onClick={this.menuClick}
                   mode="inline"
-                  defaultSelectedKeys={'3'}
+                  // defaultSelectedKeys={'3'}
                   selectedKeys={localStorage.getItem("menuid")}
                 >
                   <Menu.Item key="100"
@@ -186,6 +194,8 @@ class App extends Component {
                   <Route path="/app/log" component={log} />
                   <Route path="/app/statistics" component={statistics} />
                   <Route path="/app/person" component={person} />
+                  <Route path="/app/monitor" component={monitor} />
+                  <Route path="/app/logging" component={logging} />
                 </Switch>
               </Content>
             </Layout>

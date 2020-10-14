@@ -1,0 +1,48 @@
+#logging .headercont{
+    background: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logging .headertitle{
+    font-size: 20px;
+    font-weight: bold;
+}
+#logging .headertitles{
+    text-align: center;
+}
+
+#logging .bodycont{
+    background: white;
+    margin-bottom: 20px;
+    height: 200px;
+    
+}
+
+#logging .bodyheader{
+    padding-left: 20px;
+    border-bottom: 1px solid #dedbdb;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+
+#logging .bodyline{
+    padding: 20px;
+}
+
+#logging .bodytext{
+    line-height: 30px;
+}
+
+
+#logging .logmain{
+    padding: 20px;
+    background: #F8F8FF;
+    margin-top: 20px;
+    height: 75vh;
+    overflow-y: auto;
+}

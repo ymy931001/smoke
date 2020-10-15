@@ -319,3 +319,11 @@ export const getallmemu = params =>
     access_token: localStorage.getItem('token'),
   });
 
+//激活摄像头设备
+export const activeDevice = params =>
+  http.post(url + "/api/v1/device/activeDevice", {
+    access_token: localStorage.getItem('token'),
+    code: params[0],
+    id: params[1],
+  });
+

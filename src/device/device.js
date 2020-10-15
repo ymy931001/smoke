@@ -11,7 +11,7 @@ import {
 } from "antd";
 import {
     getdeviceList, getNotHaveList, getunitList, addsensor,
-    addcamera, deletedevice, changestaus, getRealVideo, getdevicelog
+    addcamera, deletedevice, changestaus, getRealVideo, getdevicelog, activeDevice
 } from '../axios';
 
 
@@ -96,7 +96,8 @@ class App extends React.Component {
                             )
                         }
                     }
-                }, {
+                },
+                {
                     title: "短信推送",
                     dataIndex: "sendMsg",
                     render: (text, record, index) => {
@@ -372,6 +373,7 @@ class App extends React.Component {
             unitname: undefined,
             location: undefined,
             camerarecord: undefined,
+            activevisible: false
         })
     }
 
@@ -391,28 +393,29 @@ class App extends React.Component {
         if (record.statusConnect === 0) {
             message.error('设备离线')
         } else {
-            if (!text) {
-                getRealVideo([
-                    record.id,
-                ]).then(res => {
-                    if (res.data && res.data.message === "success") {
-                        this.setState({
-                            videovisible: true,
-                            videourl: res.data.data
-                        })
-                    } else {
-                        message.error(res.data.message)
-                    }
-                });
-            } else {
-                this.setState({
-                    videovisible: true,
-                    videourl: text
-                })
-            }
-
+            getRealVideo([
+                record.id,
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    this.setState({
+                        videovisible: true,
+                        videourl: res.data.data
+                    })
+                } else {
+                    message.error(res.data.message)
+                }
+            });
 
         }
+
+        // if (!text) {
+
+        // } else {
+        //     this.setState({
+        //         videovisible: true,
+        //         videourl: text
+        //     })
+        // }
     }
 
 
@@ -763,6 +766,39 @@ class App extends React.Component {
         })
     }
 
+    //激活设备
+    activeion = (text, record, index) => {
+        this.setState({
+            cameraid: record.id,
+            activevisible: true
+        })
+    }
+
+    //输入激活码
+    activenum = (e) => {
+        this.setState({
+            activenum: e.target.value
+        })
+    }
+
+    //确认激活设备
+    activeok = () => {
+        activeDevice([
+            this.state.activenum,
+            this.state.cameraid,
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
+                message.success('设备激活成功')
+                this.getcameraList()
+                this.setState({
+                    activevisible: false,
+                })
+            } else {
+                message.error(res.data.message)
+            }
+        });
+    }
+
 
     render() {
 
@@ -877,6 +913,30 @@ class App extends React.Component {
                             return (
                                 <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.lookcamera(text, record, index)} >
                                     离线
+                                </div>
+                            )
+                        }
+                    }
+                }, {
+                    title: "激活状态",
+                    dataIndex: "isActive",
+                    filters: [
+                        { text: "已激活", value: 1 },
+                        { text: "未激活", value: 0 },
+                    ],
+                    onFilter: (value, record) => record.isActive == value,  //eslint-disable-line 
+                    render: (text, record, index) => {
+                        if (text === 1) {
+                            return (
+                                <div style={{ color: '#1eb333' }}>
+                                    已激活
+                                </div>
+                            )
+                        }
+                        if (text === 0) {
+                            return (
+                                <div style={{ color: '#f55238', cursor: 'pointer' }} onClick={() => this.activeion(text, record, index)}>
+                                    未激活
                                 </div>
                             )
                         }
@@ -1193,9 +1253,27 @@ class App extends React.Component {
                             <source src={this.state.videourl} type="application/x-mpegURL" />
                         </video> */}
                         <VideoPlayer
-                            style={{ width: '100%', height: '200px' }}
+                            // style={{ width: '100%', height: '200px' }}
                             src={this.state.videourl}
                         ></VideoPlayer>
+                    </Modal>
+                    <Modal
+                        title="设备激活"
+                        visible={this.state.activevisible}
+                        width="330px"
+                        centered
+                        onOk={this.activeok}
+                        onCancel={this.handleCancel}
+                        closable={false}
+                    >
+                        <span>验证码：</span>
+                        <Input
+                            style={{ width: '200px', marginLeft: '10px' }}
+                            autoComplete="off"
+                            placeholder="请输入验证码"
+                            value={this.state.activenum}
+                            onChange={this.activenum}
+                        />
                     </Modal>
                     <Modal
                         title="摄像头"

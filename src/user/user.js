@@ -733,7 +733,9 @@ class App extends React.Component {
                     title: col.title,
                 }),
             };
-        });
+        });    
+
+        const listion = <img src={require('../images/close.png')} alt="" />
 
         return (
             <Layout id="alarm" >
@@ -783,7 +785,7 @@ class App extends React.Component {
                         okText="删除"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         您确定要删除该角色吗？
                     </Modal>
@@ -795,7 +797,7 @@ class App extends React.Component {
                         okText="删除"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         您确定要删除该账号吗？
                     </Modal>
@@ -807,7 +809,7 @@ class App extends React.Component {
                         okText="添加"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <span>角色名称：</span>
                         <Input placeholder="请输入角色名称"
@@ -825,7 +827,7 @@ class App extends React.Component {
                         okText="确定"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <span>角色类型：</span>
                         <Select
@@ -889,7 +891,7 @@ class App extends React.Component {
                         okText="确定"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <span>真实姓名：</span>
                         <Input placeholder="请输入真实姓名"
@@ -922,7 +924,7 @@ class App extends React.Component {
                         okText="保存"
                         width="400px"
                         mask={false}
-                        closable={false}
+                        closeIcon={listion}
                         centered
                     >
                         <Tree

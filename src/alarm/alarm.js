@@ -353,6 +353,13 @@ class App extends React.Component {
             };
         });
 
+        const listion = <img src={require('../images/close.png')} alt="" />
+
+        const bodyStyle = {
+            maxHeight: document.body.clientHeight * 0.7,
+            overflowX: "auto",
+        }
+
         return (
             <Layout id="alarm" >
                 <Layout>
@@ -469,6 +476,7 @@ class App extends React.Component {
                         centered
                         onCancel={this.handleCancel}
                         footer={null}
+                        closeIcon={listion}
                     >
                         <video width="100%" controls="controls" type="video/mp4" autoPlay="autoplay" loop="loop" id="example-video" src={this.state.videourl}  >
                         </video>
@@ -477,10 +485,10 @@ class App extends React.Component {
                         title="抓拍图片"
                         visible={this.state.imgvisible}
                         width="50%"
-                        // style={{height:'300px',overflow:'auto'}}
+                        bodyStyle={bodyStyle}
                         centered
                         onCancel={this.handleCancels}
-                        // closable={false}
+                        closeIcon={listion}
                         footer={null}
                     >
                         {/* <Carousel effect="fade"  autoplay> */}

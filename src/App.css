@@ -116,6 +116,15 @@ body{
   padding-left: 55px !important; 
 }
 
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector{
+  border:1px solid #fe8616;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+  border:1px solid #fe8616;
+  box-shadow: none;
+}
+
 .ant-btn-primary:hover, .ant-btn-primary:focus{
   background:#fe8616;
   border:1px solid #fe8616;
@@ -123,6 +132,27 @@ body{
 }
 
 
+.ant-picker:hover, .ant-picker-focused{
+  border:1px solid #fe8616;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner{
+  background:#fe8616;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+  border:1px solid #fe8616;
+}
+
+.ant-picker-ranges .ant-picker-preset > .ant-tag-blue{
+  color:white;
+  border:1px solid #fe8616;
+  background:#fe8616;
+}
+
+.ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover{
+  background:#fbeadd;
+}
 
 @media screen and (max-width: 1525px) {
 

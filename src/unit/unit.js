@@ -482,7 +482,7 @@ class App extends React.Component {
                 }),
             };
         });
-
+        const listion = <img src={require('../images/close.png')} alt="" />
 
         const components = {
             // body: {
@@ -526,7 +526,7 @@ class App extends React.Component {
                         okText="删除"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         您确定要删除该单位吗？
                     </Modal>
@@ -538,7 +538,7 @@ class App extends React.Component {
                         okText="确认"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <div className="clearfix" style={{ display: 'inline-block' }}>
                             <div className="mapcontainer">

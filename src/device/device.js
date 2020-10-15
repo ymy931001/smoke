@@ -1095,6 +1095,8 @@ class App extends React.Component {
             //     cell: EditableCell,
             // },
         };
+
+        const listion = <img src={require('../images/close.png')} alt="" />
         return (
             <Layout id="device" >
                 <Layout>
@@ -1178,7 +1180,7 @@ class App extends React.Component {
                         okText="删除"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         您确定要删除该设备吗？
                     </Modal>
@@ -1188,8 +1190,9 @@ class App extends React.Component {
                         width="550px"
                         centered
                         footer={null}
+                        closeIcon={listion}
                         onCancel={this.handleCancel}
-                        closable={false}
+                    // closable={false}
                     >
                         <div className="modeltable">
                             <Table
@@ -1216,7 +1219,7 @@ class App extends React.Component {
                         centered
                         footer={null}
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <div className="modeltable">
                             <Table
@@ -1243,7 +1246,7 @@ class App extends React.Component {
                         height="300"
                         centered
                         onCancel={this.handleCancels}
-                        // closable={false}
+                        closeIcon={listion}
                         footer={null}
                     >
                         {/* <video id="myVideo" controls style='width: 100%;height: auto'>
@@ -1264,7 +1267,7 @@ class App extends React.Component {
                         centered
                         onOk={this.activeok}
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
                         <span>验证码：</span>
                         <Input
@@ -1283,7 +1286,7 @@ class App extends React.Component {
                         okText="确认"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
 
                         <span>设备类型：</span>
@@ -1331,7 +1334,7 @@ class App extends React.Component {
                         okText="确认"
                         centered
                         onCancel={this.handleCancel}
-                        closable={false}
+                        closeIcon={listion}
                     >
 
                         <span>设备类型：</span>

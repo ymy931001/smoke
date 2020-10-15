@@ -314,6 +314,8 @@ class App extends React.Component {
                 }),
             };
         });
+        
+        const listion = <img src={require('../images/close.png')} alt="" />
 
         return (
             <Layout id="alarm" >
@@ -415,7 +417,7 @@ class App extends React.Component {
                                 // okText="保存"
                                 width="400px"
                                 mask={false}
-                                closable={false}
+                                closeIcon={listion}
                                 footer={null}
                                 centered
                             >
@@ -428,7 +430,7 @@ class App extends React.Component {
                                 // okText="保存"
                                 width="400px"
                                 mask={false}
-                                closable={false}
+                                closeIcon={listion}
                                 footer={null}
                                 centered
                             >

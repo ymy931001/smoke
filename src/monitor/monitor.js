@@ -127,7 +127,7 @@ class App extends React.Component {
                                                 内存总量：{datalist.ramTotal}（G）
                                             </div>
                                             <div className="bodytext">
-                                                空闲内存：{datalist.ramUsed}（G）
+                                                已用内存：{datalist.ramUsed}（G）
                                             </div>
                                         </div>
                                     </div>

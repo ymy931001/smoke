@@ -23,8 +23,11 @@ const AMap = window.AMap;
 const scenelist = {
     1: '医院',
     2: '酒店',
-    3: '公共场所',
-    4: '其他'
+    3: '网吧',
+    4: '车站码头',
+    5: '写字楼',
+    6: '商场',
+    7: '其他',
 }
 
 
@@ -49,8 +52,11 @@ class App extends React.Component {
                     filters: [
                         { text: "医院", value: 1 },
                         { text: "酒店", value: 2 },
-                        { text: "公共场所", value: 3 },
-                        { text: "其他", value: 4 },
+                        { text: "网吧", value: 3 },
+                        { text: "车站码头", value: 4 },
+                        { text: "写字楼", value: 5 },
+                        { text: "商场", value: 6 },
+                        { text: "其他", value: 7 },
                     ],
                     onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
                     render: (text, record, index) => {
@@ -119,8 +125,11 @@ class App extends React.Component {
                     filters: [
                         { text: "医院", value: 1 },
                         { text: "酒店", value: 2 },
-                        { text: "公共场所", value: 3 },
-                        { text: "其他", value: 4 },
+                        { text: "网吧", value: 3 },
+                        { text: "车站码头", value: 4 },
+                        { text: "写字楼", value: 5 },
+                        { text: "商场", value: 6 },
+                        { text: "其他", value: 7 },
                     ],
                     onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
                     render: (text, record, index) => {
@@ -232,12 +241,12 @@ class App extends React.Component {
                 };
                 var autocomplete = new AMap.Autocomplete(autoOptions);
 
-                var clickEventListener = map.on('click', function (e) {
-                    console.log(e)
-                    document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
-                    document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
-                    // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
-                });
+                // var clickEventListener = map.on('click', function (e) {
+                //     console.log(e)
+                //     document.getElementById('longitudetext').innerHTML = e.lnglat.getLng();
+                //     document.getElementById('latitudetext').innerHTML = e.lnglat.getLat();
+                //     // alert(e.lnglat.getLng() + ',' + e.lnglat.getLat())
+                // });
                 var placeSearch = new AMap.PlaceSearch({
                     // city: '浙江',
                     map: map
@@ -566,7 +575,11 @@ class App extends React.Component {
                             <Select placeholder="请选择所属场景" style={{ width: "100%", marginBottom: "7px", marginTop: '7px' }} onChange={this.scenetype} value={this.state.scenetype}>
                                 <Option value={1}>医院</Option>
                                 <Option value={2}>酒店</Option>
-                                <Option value={3}>公共场所</Option>
+                                <Option value={3}>网吧</Option>
+                                <Option value={4}>车站码头</Option>
+                                <Option value={5}>写字楼</Option>
+                                <Option value={6}>商场</Option>
+                                <Option value={7}>其他</Option>
                             </Select>
                             <span>所属区域：</span>
                             <Cascader

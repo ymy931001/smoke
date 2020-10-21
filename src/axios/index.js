@@ -34,6 +34,7 @@ export const getalarmList = params =>
     pageSize: params[8],
     beginTime: params[9],
     endTime: params[10],
+    unitType: params[11],
   });
 
 

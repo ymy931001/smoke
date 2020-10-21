@@ -6,7 +6,7 @@ import {
     Input,
     Cascader,
     Pagination,
-    Tabs, message, Modal, DatePicker
+    Tabs, message, Modal, DatePicker, Select
 } from "antd";
 import { getalarmList, getAlarmVideoUrl } from '../axios';
 
@@ -19,6 +19,17 @@ const { Content } = Layout;
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
+const { Option } = Select;
+
+const scenelist = {
+    1: '医院',
+    2: '酒店',
+    3: '网吧',
+    4: '车站码头',
+    5: '写字楼',
+    6: '商场',
+    7: '其他',
+}
 // const dateFormat = 'YYYY-MM-DD';
 
 class App extends React.Component {
@@ -45,6 +56,26 @@ class App extends React.Component {
             {
                 title: "单位名称",
                 dataIndex: "unit",
+            }, {
+                title: "所属场景",
+                dataIndex: "unitType",
+                // filters: [
+                //     { text: "医院", value: 1 },
+                //     { text: "酒店", value: 2 },
+                //     { text: "网吧", value: 3 },
+                //     { text: "车站码头", value: 4 },
+                //     { text: "写字楼", value: 5 },
+                //     { text: "商场", value: 6 },
+                //     { text: "其他", value: 7 },
+                // ],
+                // onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
+                render: (text, record, index) => {
+                    return (
+                        <div >
+                            {scenelist[text]}
+                        </div>
+                    )
+                }
             }, {
                 title: "所属区域",
                 dataIndex: "address",
@@ -92,6 +123,26 @@ class App extends React.Component {
                 title: "单位名称",
                 dataIndex: "unit",
             }, {
+                title: "所属场景",
+                dataIndex: "unitType",
+                // filters: [
+                //     { text: "医院", value: 1 },
+                //     { text: "酒店", value: 2 },
+                //     { text: "网吧", value: 3 },
+                //     { text: "车站码头", value: 4 },
+                //     { text: "写字楼", value: 5 },
+                //     { text: "商场", value: 6 },
+                //     { text: "其他", value: 7 },
+                // ],
+                // onFilter: (value, record) => record.unitType == value,  //eslint-disable-line 
+                render: (text, record, index) => {
+                    return (
+                        <div >
+                            {scenelist[text]}
+                        </div>
+                    )
+                }
+            }, {
                 title: "所属区域",
                 dataIndex: "address",
             },
@@ -131,7 +182,8 @@ class App extends React.Component {
             this.state.pageNum,
             this.state.pageNumSize,
             this.state.begintime,
-            this.state.endtime
+            this.state.endtime,
+            this.state.unitType
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
@@ -155,6 +207,9 @@ class App extends React.Component {
             this.state.keytexts,
             this.state.pageNums,
             this.state.pageNumSizes,
+            null,
+            null,
+            this.state.unitTypes
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 this.setState({
@@ -314,6 +369,27 @@ class App extends React.Component {
 
     }
 
+    //所属场景筛选
+    unitType = (value) => {
+        console.log(value)
+        this.setState({
+            unitType: value
+        }, function () {
+            this.cameraalarm()
+        })
+    }
+
+
+    //所属场景筛选
+    unitTypes = (value) => {
+        console.log(value)
+        this.setState({
+            unitTypes: value
+        }, function () {
+            this.sensoralarm()
+        })
+    }
+
 
     render() {
         const imgoption = this.state.imglist.map((img) =>
@@ -393,6 +469,17 @@ class App extends React.Component {
                                                     '本月': [moment().startOf('month'), moment().endOf('month')],
                                                 }}
                                             />
+                                            <span>所属场景：</span>
+                                            <Select placeholder="请选择所属场景" style={{ width: '150px', marginRight: "20px", }} onChange={this.unitType} value={this.state.unitType}>
+                                                <Option value={null}>全部</Option>
+                                                <Option value={1}>医院</Option>
+                                                <Option value={2}>酒店</Option>
+                                                <Option value={3}>网吧</Option>
+                                                <Option value={4}>车站码头</Option>
+                                                <Option value={5}>写字楼</Option>
+                                                <Option value={6}>商场</Option>
+                                                <Option value={7}>其他</Option>
+                                            </Select>
                                             <Button type="primary" onClick={this.cameraquery}>查询</Button>
                                         </div>
                                         {/* 时间&nbsp;:
@@ -446,6 +533,17 @@ class App extends React.Component {
                                             value={this.state.keytexts}
                                             onChange={this.keytexts}
                                         />
+                                        <span>所属场景：</span>
+                                        <Select placeholder="请选择所属场景" style={{ width: '150px', marginRight: "20px", }} onChange={this.unitTypes} value={this.state.unitTypes}>
+                                            <Option value={null}>全部</Option>
+                                            <Option value={1}>医院</Option>
+                                            <Option value={2}>酒店</Option>
+                                            <Option value={3}>网吧</Option>
+                                            <Option value={4}>车站码头</Option>
+                                            <Option value={5}>写字楼</Option>
+                                            <Option value={6}>商场</Option>
+                                            <Option value={7}>其他</Option>
+                                        </Select>
                                         <Button type="primary" onClick={this.query}>查询</Button>
                                         <div style={{ marginTop: '20px' }}>
                                             <Table

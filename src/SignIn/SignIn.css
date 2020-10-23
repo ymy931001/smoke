@@ -9,7 +9,7 @@
 .cover{
   width: 100%;
   height: 100vh;
-  background: url(./background.png) no-repeat bottom  center;
+  background: url("https://mainimg.terabits.cn/background.png") no-repeat bottom  center;
   background-size:cover;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@
  #signbody .loginl{
    width: 55%;
    height: 440px;
-   background: url(./loginl.png) no-repeat  center center;
+   background: url("https://mainimg.terabits.cn/smokeloginl.png") no-repeat  center center;
    float: left;
  }
 

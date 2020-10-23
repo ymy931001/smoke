@@ -264,6 +264,15 @@ class App extends React.Component {
                     imgvisible: true,
                     imglist: JSON.parse(record.images)
                 }, function () {
+                    var arr = this.state.imglist
+                    if (record.imageInfraRed) {
+                        arr.push("http://smoke.terabits.cn" + record.imageInfraRed)
+                        this.setState({
+                            imglist: arr
+                        }, function () {
+                            console.log(this.state.imglist)
+                        })
+                    }
                     console.log(this.state.imglist)
                 })
             }

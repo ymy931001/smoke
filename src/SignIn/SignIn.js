@@ -118,7 +118,7 @@ class SignIn extends Component {
           <div className="SignIn-body">
             <div className="cover">
               <div className="logo">
-                <img src={require('./logo1.png')} alt="" style={{ width: "70px", marginRight: '20px' }} />
+                <img src='http://disimg.terabits.cn/smokelogo.png' alt="" style={{ width: "70px", marginRight: '20px' }} />
                 舟山市违禁吸烟监控智能分析平台
               </div>
               <div className="loginmain">

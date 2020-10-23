@@ -109,7 +109,7 @@ body{
 }
 
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
-  background: url(./back.png) no-repeat;
+  background: url("http://disimg.terabits.cn/smokeback.png") no-repeat;
   width: 260px !important;
   max-width: 260px !important;
   min-width: 260px !important;
@@ -180,7 +180,7 @@ body{
   }
 
   .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
-    background: url(./back2.png) no-repeat;
+    background: url("http://disimg.terabits.cn/smokeback.png") no-repeat;
     width: 210px !important;
     max-width: 210px !important;
     min-width: 210px !important;

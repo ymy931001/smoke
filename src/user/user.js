@@ -232,7 +232,6 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        console.log(this.props.location.state.typeId)
         document.title = "用户管理";
         if (localStorage.getItem("usertype") === "1") {
             this.setState({

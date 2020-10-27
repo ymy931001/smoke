@@ -10,7 +10,7 @@
 }
 
 #statistics .dashboard{
-    height: 200px;
+    height: 140px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@
 
 #statistics .tongji{
     width: 100%;
-    height: 500px;
+    min-height: 500px;
     background: white;
     margin-top: 20px;
     padding-top: 10px;
@@ -36,21 +36,37 @@
   
 }
 
+#statistics .scenetxt{
+    font-size: 16px;
+    font-weight: bold;
+    color:#fd7a12;
+}
+
+#statistics .sceneleft{
+    font-size: 16px;
+    color:#999;
+    margin-left: 20px;
+}
+
 
 
 #statistics .dashtext{
-    color:#fd7711;
+    color:#fe8114;
 }
 
 #statistics .dashtext1{
-    color:#1aa5fd;
+    color:#46a7f2;
 }
 
 
 
 
 #statistics .dashtext2{
-    color:#ac31fa;
+    color:#ffad1e;
+}
+
+#statistics .dashtext3{
+    color:#63cd5d;
 }
 
 
@@ -103,7 +119,7 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    background: red;
+    background: #f33920;
     color:white;
     font-size: 16px;
     display: flex;
@@ -116,7 +132,7 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    background: orange;
+    background: #fd7a12;
     color:white;
     font-size: 16px;
     display: flex;
@@ -129,7 +145,7 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    background: green;
+    background: #fdb212;
     color:white;
     font-size: 16px;
     display: flex;
@@ -147,6 +163,22 @@
 .ant-layout.ant-layout-has-sider > .ant-layout, .ant-layout.ant-layout-has-sider > .ant-layout-content{
     overflow-x: visible;
 }
+
+#menulist{
+    padding-left: 20px;
+}
+
+#menulist  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background: url("http://disimg.terabits.cn/menuback.png") no-repeat;
+
+  }
+  
+
+
+  #menulist .ant-menu-item-selected a span{
+    color:#fc700e;
+    font-size: 16px;
+  }
 
 
 @media screen and (max-width: 1525px) {

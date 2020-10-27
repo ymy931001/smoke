@@ -2,12 +2,12 @@ import http from "./tools";
 
 
 // export const url = 'http://192.168.1.228:8081';
-// export const url = 'http://192.168.1.224:8088/zs/smoke';
+export const url = 'http://192.168.1.224:8088/zs/smoke';
 // export const url = 'http://47.110.248.244:8081';
 // export const url = 'http://121.41.8.207:8081';
 // export const url = 'http://192.168.3.9:8088/zs/smoke';
 // export const url = 'http://121.41.8.207:8088/zs/smoke';
-export const url = 'http://47.98.110.30:8088/zs/smoke';
+// export const url = 'http://47.98.110.30:8088/zs/smoke';
 // export const url = 'https://filing.terabits.cn:8000';
 
 
@@ -298,7 +298,7 @@ export const getBaseInfo = params =>
 export const getUnitAlarmList = params =>
   http.get(url + "/api/v1/statistics/getUnitAlarmList", {
     access_token: localStorage.getItem('token'),
-
+    dateKey: params[0],
   });
 
 //设备报警统计
@@ -326,5 +326,29 @@ export const activeDevice = params =>
     access_token: localStorage.getItem('token'),
     code: params[0],
     id: params[1],
+  });
+
+
+//场景报警总量统计
+export const getNearMonthUnitTypeAlarmList = params =>
+  http.get(url + "/api/v1/statistics/getNearMonthUnitTypeAlarmList", {
+    access_token: localStorage.getItem('token'),
+    dateKey: params[0],
+  });
+
+
+//获取所有场景
+export const getSceneList = params =>
+  http.get(url + "/api/v1/statistics/getSceneList", {
+    access_token: localStorage.getItem('token'),
+  });
+
+
+//获取所有场景
+export const getSceneUnitAlarmList = params =>
+  http.get(url + "/api/v1/statistics/getSceneUnitAlarmList", {
+    access_token: localStorage.getItem('token'),
+    unitType: params[0],
+    dateKey: params[1],
   });
 

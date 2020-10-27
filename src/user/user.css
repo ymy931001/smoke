@@ -45,7 +45,7 @@
 }
 
 .ant-modal-header{
-    background: url(../images/btnback.png) no-repeat ;
+    background: url("http://disimg.terabits.cn/btnback.png") no-repeat ;
     border:'none';
     padding: 10px 24px;
     background-size: cover;

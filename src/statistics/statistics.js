@@ -6,7 +6,7 @@ import {
     Col,
     Row,
     // DatePicker,
-    Tabs, message, Modal
+    Tabs, Menu, Modal
 } from "antd";
 import {
     G2,
@@ -20,18 +20,30 @@ import {
     View,
     Guide,
     Shape,
-    Facet,
     Util
 } from "bizcharts";
+import { Route, Switch, Link } from 'react-router-dom';
 import DataSet from "@antv/data-set";
-import { getBaseInfo, getUnitAlarmList, getDeviceAlarmList, getDistrictUnit } from '../axios';
+import {
+    AppstoreOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    PieChartOutlined,
+    DesktopOutlined,
+    ContainerOutlined,
+    MailOutlined,
+} from '@ant-design/icons';
+import {
+    getBaseInfo, getUnitAlarmList, getDeviceAlarmList, getDistrictUnit, getSceneList,
+    getNearMonthUnitTypeAlarmList, getSceneUnitAlarmList
+} from '../axios';
 
 
 import "./statistics.css";
 // import moment from 'moment';
 
 const { Content } = Layout;
-// const { RangePicker } = DatePicker;
+const { SubMenu } = Menu;
 const { TabPane } = Tabs;
 
 // const dateFormat = 'YYYY-MM-DD';
@@ -43,6 +55,7 @@ class App extends React.Component {
             videoListDataSource: [],
             devicealarmlist: [],
             districunit: [],
+            scenetimelist: [],
             device_ip: null,
             typenone: "inline-block",
             pageNum: 1,
@@ -51,10 +64,14 @@ class App extends React.Component {
             weekback: 'orange',
             yearback: '#fe8616',
             monthback: '#fe8616',
+            collapsed: false,
             deviceList: JSON.parse(localStorage.getItem('unitTree')),
             deviceLists: JSON.parse(localStorage.getItem('unitTree')),
             selectname: null,
             selectcount: null,
+            unitTypelist: null,
+            menulist: [],
+            unitType: 2,
         };
 
     }
@@ -71,11 +88,32 @@ class App extends React.Component {
                     unitNum: res.data.data.unitNum,
                     deviceNum: res.data.data.deviceNum,
                     eventNum: res.data.data.eventNum,
+                    dailyEventNum: res.data.data.dailyEventNum,
                 })
             }
         });
 
+        getSceneList([
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
+                var arr = {}
+                for (var i in res.data.data) {
+                    arr[res.data.data[i].type] = res.data.data[i].info
+                }
+                this.setState({
+                    unitTypelist: arr,
+                    menulist: res.data.data
+                })
+            }
+        });
+
+
+
+
+
+
         getUnitAlarmList([
+            2
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 for (var i in res.data.data) {
@@ -89,83 +127,83 @@ class App extends React.Component {
 
         this.getdevicealarmlist()
 
-
-
-        getDistrictUnit([
-
+        getNearMonthUnitTypeAlarmList([
+            2
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 var arr = []
-                arr.push({
-                    "item": "嵊泗县",
-                    "count": res.data.data.cenSiNum
-                }, {
-                    "item": "定海区",
-                    "count": res.data.data.dingHaiNum
-                }, {
-                    "item": "普陀区",
-                    "count": res.data.data.puTuoNum
-                }, {
-                    "item": "岱山县",
-                    "count": res.data.data.daiSanNum
-                })
-                var newarr = []
-                for (var i in arr) {
-                    if (arr[i].count != 0) {
-                        newarr.push(arr[i])
-                    }
+                var num = 0
+                for (var i in res.data.data) {
+                    arr.push(res.data.data[i])
+                    num += parseInt(res.data.data[i].alarmNum)
+                    res.data.data[i].item = res.data.data[i].info
+                    res.data.data[i].count = res.data.data[i].alarmNum
                 }
+                console.log(arr)
                 this.setState({
-                    districunit: newarr,
-                    districunitnum: parseInt(res.data.data.cenSiNum) + parseInt(res.data.data.dingHaiNum) + parseInt(res.data.data.puTuoNum)
-                        + parseInt(res.data.data.daiSanNum),
+
+                    districunit: arr,
+                    districunitnum: num,
                     selectname: '总计',
-                    selectcount: parseInt(res.data.data.cenSiNum) + parseInt(res.data.data.dingHaiNum) + parseInt(res.data.data.puTuoNum)
-                        + parseInt(res.data.data.daiSanNum),
+                    selectcount: num
                 })
             }
         });
-
-
 
 
     }
 
     getdevicealarmlist = () => {
-        getDeviceAlarmList([
-            this.state.datetype
+        getSceneUnitAlarmList([
+            this.state.unitType,
+            this.state.datetype,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
-
                 if (this.state.datetype === 3) {
-                    for (var i in res.data.data) {
-                        if (res.data.data[i].deviceType === 2) {
-                            res.data.data[i].deviceType = "摄像头告警"
-                        }
-                        if (res.data.data[i].deviceType === 1 || res.data.data[i].deviceType === "1") {
-                            res.data.data[i].deviceType = "传感器告警"
-                        }
-                        res.data.data[i].alarmTime = res.data.data[i].alarmTime.substring(0, 7)
+                    for (var i in res.data.data.sceneAlarmList) {
+                        res.data.data.sceneAlarmList[i].time = res.data.data.sceneAlarmList[i].time.substring(0, 7)
+                        res.data.data.sceneAlarmList[i].type = res.data.data.unitType
                     }
-                    var arr = res.data.data
+                    var arr = res.data.data.sceneAlarmList
                     arr.sort(function (a, b) {
-                        return a.alarmTime < b.alarmTime ? -1 : 1
+                        return a.time < b.time ? -1 : 1
                     });
                 } else {
-                    for (var i in res.data.data) {
-                        if (res.data.data[i].deviceType === 2) {
-                            res.data.data[i].deviceType = "摄像头告警"
-                        }
-                        if (res.data.data[i].deviceType === 1) {
-                            res.data.data[i].deviceType = "传感器告警"
+                    for (var i in res.data.data.sceneAlarmList) {
+                        res.data.data.sceneAlarmList[i].time = res.data.data.sceneAlarmList[i].time.substring(5, 10)
+                        res.data.data.sceneAlarmList[i].type = res.data.data.unitType
+                    }
+                }
+
+                this.setState({
+                    devicealarmlist: res.data.data.sceneAlarmList,
+                    unitNums: res.data.data.unitNum,
+                    deviceNums: res.data.data.deviceNum,
+                })
+                var arr = []
+                console.log()
+                for (var i = 6; i < 24; i++) {
+                    arr.push({
+                        "key": i + ":00",
+                        "num": 0,
+                        "value": i,
+                    })
+                }
+
+                for (var i in res.data.data.eventList) {
+                    for (var j in arr) {
+                        if (parseInt(res.data.data.eventList[i].gmtCreate.substring(11, 13)) === arr[j].value) {
+                            arr[j].num += 1
                         }
                     }
                 }
                 this.setState({
-                    devicealarmlist: res.data.data,
+                    scenetimelist: arr
                 })
             }
         });
+
+
     }
 
     monthdate = () => {
@@ -201,6 +239,15 @@ class App extends React.Component {
         })
     }
 
+    menuchange = (e) => {
+        console.log(e)
+        this.setState({
+            unitType: e.key
+        }, function () {
+            this.getdevicealarmlist()
+        })
+    }
+
 
     render() {
 
@@ -229,6 +276,12 @@ class App extends React.Component {
             }
         };
 
+
+        const unitcols = {
+            sales: {
+                tickInterval: 20
+            }
+        };
 
         this.unitalarmColumns = [
             {
@@ -287,125 +340,231 @@ class App extends React.Component {
             }
         ];
 
-
+        const contmenu = this.state.menulist.map((province) =>
+            <Menu.Item key={province.type}
+            >
+                <Link to={province.type}>
+                    <span>{province.info}</span>
+                </Link>
+            </Menu.Item>
+        );
         return (
             <Layout id="statistics" >
                 <Layout>
                     <Content style={{ margin: "20px 0px", marginRight: '20px' }} >
                         <div className="headercont">
-                            区域统计
+                            数据统计
                         </div>
                         <div>
                             <Row gutter={24}>
-                                <Col className="gutter-row" span={17}>
-                                    <Row gutter={24}>
-                                        <Col className="gutter-row" span={8}>
-                                            <div className="dashboard">
-                                                <img src={require('../images/dashboard1.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
-                                                <div>
-                                                    <div className="dashtext">
-                                                        <span className="dashtxt">
-                                                            {this.state.unitNum}
-                                                        </span>
-                                                        <span>个</span>
-                                                    </div>
-                                                    <div className="dashbottxt">
-                                                        单位总数
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col className="gutter-row" span={8}>
-                                            <div className="dashboard">
-                                                <img src={require('../images/dashboard2.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
-                                                <div>
-                                                    <div className="dashtext1">
-                                                        <span className="dashtxt">
-                                                            {this.state.deviceNum}
-                                                        </span>
-                                                        <span>个</span>
-                                                    </div>
-                                                    <div className="dashbottxt">
-                                                        设备总数
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col className="gutter-row" span={8}>
-                                            <div className="dashboard">
-                                                <img src={require('../images/dashboard3.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
-                                                <div>
-                                                    <div className="dashtext2">
-                                                        <span className="dashtxt">
-                                                            {this.state.eventNum}
-                                                        </span>
-                                                        <span>次</span>
-                                                    </div>
-                                                    <div className="dashbottxt">
-                                                        告警总数
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <div className="tongji">
-                                        <div className="righthead">
-                                            <div>
-                                                设备告警统计
-                                            </div>
-                                            <div>
-                                                <Button type="primary" style={{ marginRight: '10px', background: this.state.weekback }} onClick={this.weekdate}  >
-                                                    近一周
-                                    </Button>
-                                                <Button type="primary" onClick={this.monthdate} style={{ marginRight: '10px', background: this.state.monthback }}>
-                                                    近一月
-                                    </Button>
-                                                <Button type="primary" onClick={this.yeardate} style={{ background: this.state.yearback }} >
-                                                    近一年
-                                    </Button>
-                                            </div>
-                                        </div>
+                                <Col className="gutter-row" span={6}>
+                                    <div className="dashboard">
+                                        <img src={require('../images/dashboard1.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
                                         <div>
-                                            <Chart height={470} data={this.state.devicealarmlist} scale={colss} forceFit>
-                                                <Legend />
-                                                <Axis name="alarmTime" />
-                                                <Axis
-                                                    name="alarmNum"
-                                                    label={{
-                                                        formatter: val => `${val}`
-                                                    }}
-                                                />
-                                                <Tooltip
-                                                    crosshairs={{
-                                                        type: "y"
-                                                    }}
-                                                />
-                                                <Geom
-                                                    type="line"
-                                                    position="alarmTime*alarmNum"
-                                                    size={2}
-                                                    color={"deviceType"}
-                                                    shape={"smooth"}
-                                                />
-                                                <Geom
-                                                    type="point"
-                                                    position="alarmTime*alarmNum"
-                                                    size={4}
-                                                    shape={"circle"}
-                                                    color={"deviceType"}
-                                                    style={{
-                                                        stroke: "#fff",
-                                                        lineWidth: 1
-                                                    }}
-                                                />
-                                            </Chart>
+                                            <div className="dashtext">
+                                                <span className="dashtxt">
+                                                    {this.state.dailyEventNum}
+                                                </span>
+                                                {/* <span>个</span> */}
+                                            </div>
+                                            <div className="dashbottxt">
+                                                今日告警
+                                                    </div>
                                         </div>
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={7}>
+                                <Col className="gutter-row" span={6}>
+                                    <div className="dashboard">
+                                        <img src={require('../images/dashboard2.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
+                                        <div>
+                                            <div className="dashtext1">
+                                                <span className="dashtxt">
+                                                    {this.state.eventNum}
+                                                </span>
+                                                {/* <span>个</span> */}
+                                            </div>
+                                            <div className="dashbottxt">
+                                                告警总数
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col className="gutter-row" span={6}>
+                                    <div className="dashboard">
+                                        <img src={require('../images/dashboard3.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
+                                        <div>
+                                            <div className="dashtext2">
+                                                <span className="dashtxt">
+                                                    {this.state.deviceNum}
+                                                </span>
+                                                <span>个</span>
+                                            </div>
+                                            <div className="dashbottxt">
+                                                设备总数
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col className="gutter-row" span={6}>
+                                    <div className="dashboard">
+                                        <img src={require('../images/dashboard4.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
+                                        <div>
+                                            <div className="dashtext3">
+                                                <span className="dashtxt">
+                                                    {this.state.unitNum}
+                                                </span>
+                                                <span>个</span>
+                                            </div>
+                                            <div className="dashbottxt">
+                                                单位总数
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <Row gutter={24}>
+                                <Col className="gutter-row" span={18}>
+                                    <div className="tongji">
+                                        <div className="righthead">
+                                            <div>
+                                                场景单位告警统计
+                                            </div>
+                                        </div>
+                                        <div style={{ textAlign: 'right', paddingRight: '20px' }}>
+                                            <span className="sceneleft">单位数量：<span className="scenetxt"> {this.state.unitNums} </span>个</span>
+                                            <span className="sceneleft">设备数量： <span className="scenetxt"> {this.state.deviceNums} </span>个</span>
+                                            <Button type="primary" style={{ marginLeft: '30px', marginRight: '10px', background: this.state.weekback }} onClick={this.weekdate}  >
+                                                近一周
+                                                </Button>
+                                            <Button type="primary" onClick={this.monthdate} style={{ marginRight: '10px', background: this.state.monthback }}>
+                                                近一月
+                                                </Button>
+                                            <Button type="primary" onClick={this.yeardate} style={{ background: this.state.yearback }} >
+                                                近一年
+                                                </Button>
+                                        </div>
+                                        <Row gutter={24}>
+                                            <Col className="gutter-row" span={5}>
+                                                <div style={{ borderRight: '1px solid #ffd7b8' }} id="menulist">
+                                                    <Menu
+                                                        defaultSelectedKeys={['2']}
+                                                        // defaultOpenKeys={['sub1']}
+                                                        mode="inline"
+                                                        theme="dark"
+                                                        inlineCollapsed={this.state.collapsed}
+                                                        style={{ marginTop: "20px" }}
+                                                        onSelect={this.menuchange}
+                                                    >
+                                                        {contmenu}
+                                                        {/* <Menu.Item key="1" icon={<PieChartOutlined />}>
+                                                            Option 1
+                                                    </Menu.Item>
+                                                        <Menu.Item key="2" icon={<DesktopOutlined />}>
+                                                            Option 2
+                                                    </Menu.Item>
+                                                        <Menu.Item key="3" icon={<ContainerOutlined />}>
+                                                            Option 3
+                                                    </Menu.Item> */}
+                                                    </Menu>
+                                                </div>
+                                            </Col>
+                                            <Col className="gutter-row" span={19}>
+                                                <div>
+                                                    <Chart height={350} data={this.state.devicealarmlist} scale={colss} forceFit>
+                                                        <Legend />
+                                                        <Axis name="time" />
+                                                        <Axis
+                                                            name="alarmNum"
+                                                            label={{
+                                                                formatter: val => `${val}`
+                                                            }}
+                                                        />
+                                                        <Tooltip
+                                                            crosshairs={{
+                                                                type: "y"
+                                                            }}
+                                                        />
+                                                        <Geom
+                                                            type="line"
+                                                            position="time*alarmNum"
+                                                            size={2}
+                                                            color={"#ffc13f"}
+                                                            shape={"smooth"}
+                                                            tooltip={[
+                                                                "time*alarmNum",
+                                                                (time, alarmNum) => {
+                                                                    return {
+                                                                        name: "告警总数" + "：",
+                                                                        value: ` ${alarmNum} 个`
+                                                                    };
+                                                                }
+                                                            ]}
+                                                        />
+                                                        <Geom
+                                                            type="point"
+                                                            position="time*alarmNum"
+                                                            size={4}
+                                                            shape={"hollowCircle"}
+                                                            color={"#ffc13f"}
+                                                            style={{
+                                                                stroke: "#fff",
+                                                                lineWidth: 1
+                                                            }}
+                                                            tooltip={[
+                                                                "time*alarmNum",
+                                                                (time, alarmNum) => {
+                                                                    return {
+                                                                        name: "告警总数" + "：",
+                                                                        value: ` ${alarmNum} 个`
+                                                                    };
+                                                                }
+                                                            ]}
+                                                        />
+                                                        <div style={{ textAlign: 'center' }}>
+                                                            设备告警统计
+                                                    </div>
+                                                    </Chart>
+
+                                                </div>
+                                                <div style={{ height: '300px' }}>
+                                                    <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit>
+                                                        <Axis name="key" />
+                                                        <Axis name="num" />
+                                                        <Tooltip
+                                                        />
+                                                        <Geom type="interval" position="key*num" color="#ffcc8a" >
+                                                            <Label
+                                                                content="num"
+                                                                textStyle={{
+                                                                    fill: '#fd7a12', // 文本的颜色
+                                                                    textBaseline: 'middle'
+                                                                }}
+                                                            // tooltip={[
+                                                            //     "key*num",
+                                                            //     (key, num) => {
+                                                            //         return {
+                                                            //             name: "告警数量" + "：",
+                                                            //             value: ` ${num} 个`
+                                                            //         };
+                                                            //     }
+                                                            // ]}
+                                                            />
+                                                        </Geom>
+                                                        <div style={{ textAlign: 'center' }}>
+                                                            24小时告警趋势图 <span style={{ color: '#999', fontSize: '14px', marginLeft: '5px' }}>基于过去两周的数据统计</span>
+                                                        </div>
+                                                    </Chart>
+
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                                <Col className="gutter-row" span={6} style={{ marginTop: '20px' }}>
                                     <div className="areastatistics">
                                         <div className="righthead">
-                                            区域所属单位统计
+                                            近一月告警总量分布图
                                         </div>
                                         <div>
                                             <Chart
@@ -438,8 +597,8 @@ class App extends React.Component {
                                                     <Guide.Text
                                                         top
                                                         position={['50%', '50%']}
-                                                        content={`${this.state.selectname}${this.state.selectcount}个`}
-                                                        style={{ textAlign: 'center', fontSize: 20 }}
+                                                        content={`${this.state.selectcount}`}
+                                                        style={{ textAlign: 'center', fontSize: 24, color: "#333", fontWeight: 'bold' }}
                                                     // className="circlestyle"
                                                     />
                                                     {/* <Html
@@ -482,7 +641,7 @@ class App extends React.Component {
                                     </div>
                                     <div className="areastatistics">
                                         <div className="righthead">
-                                            单位告警排行
+                                            近一月单位告警排行
                                         </div>
                                         <div className="alarmtable">
                                             <Table
@@ -497,7 +656,7 @@ class App extends React.Component {
                             </Row>
                         </div>
                     </Content>
-                </Layout>
+                </Layout >
             </Layout >
         );
     }

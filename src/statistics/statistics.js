@@ -647,7 +647,7 @@ class App extends React.Component {
                                             <Table
                                                 dataSource={this.state.unitalarmlist}
                                                 columns={this.unitalarmColumns}
-                                                pagination={false}
+                                                // pagination={false}
                                             // scroll={{ y: 270 }}
                                             />
                                         </div>

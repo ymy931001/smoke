@@ -352,3 +352,20 @@ export const getSceneUnitAlarmList = params =>
     dateKey: params[1],
   });
 
+//获取所有场景
+export const getUnitAlarmHeatImage = params =>
+  http.get(url + "/api/v1/unit/getUnitAlarmHeatImage", {
+    access_token: localStorage.getItem('token'),
+    id: params[0],
+  });
+
+
+//获取对应单位报警数据
+export const getUnitAlarm = params =>
+  http.get(url + "/api/v1/statistics/getUnitAlarm", {
+    access_token: localStorage.getItem('token'),
+    dateKey: params[0],
+    unitId: params[1],
+  });
+
+

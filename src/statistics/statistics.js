@@ -471,7 +471,7 @@ class App extends React.Component {
                                             </Col>
                                             <Col className="gutter-row" span={19}>
                                                 <div>
-                                                    <Chart height={350} data={this.state.devicealarmlist} scale={colss} forceFit>
+                                                    <Chart height={300} data={this.state.devicealarmlist} scale={colss} forceFit padding="auto">
                                                         <Legend />
                                                         <Axis name="time" />
                                                         <Axis
@@ -527,8 +527,8 @@ class App extends React.Component {
                                                     </Chart>
 
                                                 </div>
-                                                <div style={{ height: '300px' }}>
-                                                    <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit>
+                                                <div style={{ height: '350px' }}>
+                                                    <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit padding="auto">
                                                         <Axis name="key" />
                                                         <Axis name="num" />
                                                         <Tooltip
@@ -552,7 +552,7 @@ class App extends React.Component {
                                                             />
                                                         </Geom>
                                                         <div style={{ textAlign: 'center' }}>
-                                                            24小时告警趋势图 <span style={{ color: '#999', fontSize: '14px', marginLeft: '5px' }}>基于过去两周的数据统计</span>
+                                                            24小时告警趋势图
                                                         </div>
                                                     </Chart>
 
@@ -644,12 +644,21 @@ class App extends React.Component {
                                             近一月单位告警排行
                                         </div>
                                         <div className="alarmtable">
-                                            <Table
-                                                dataSource={this.state.unitalarmlist}
-                                                columns={this.unitalarmColumns}
-                                                // pagination={false}
-                                            // scroll={{ y: 270 }}
-                                            />
+                                            <div>
+                                                <span className="tdfirst"></span>
+                                                <span className="tdtwo">单位名称</span>
+                                                <span className="tdthree">设备数量</span>
+                                                <span className="tdfour">告警总量</span>
+                                            </div>
+                                            <div className="tablescoll">
+                                                <Table
+                                                    dataSource={this.state.unitalarmlist}
+                                                    columns={this.unitalarmColumns}
+                                                    showHeader={false}
+                                                    pagination={false}
+                                                // scroll={{ y: 270 }}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </Col>

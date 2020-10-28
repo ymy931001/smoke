@@ -6,9 +6,23 @@ import {
     Input,
     Table,
     Modal,
-    Cascader, DatePicker, message, Select, Tooltip
+    Cascader, DatePicker, message, Select
 } from "antd";
-import { getunitList, addunit, deleteunit } from '../axios';
+import {
+    G2,
+    Chart,
+    Geom,
+    Axis,
+    Tooltip,
+    Coord,
+    Label,
+    Legend,
+    View,
+    Guide,
+    Shape,
+    Util
+} from "bizcharts";
+import { getunitList, addunit, deleteunit, getUnitAlarmHeatImage, getUnitAlarm } from '../axios';
 
 
 import "./unit.css";
@@ -37,8 +51,14 @@ class App extends React.Component {
         this.state = {
             videoListDataSource: [],
             device_ip: null,
+            scenetimelist: [],
+            devicealarmlist: [],
             typenone: "inline-block",
-            deviceList: JSON.parse(localStorage.getItem('AreaTree'))
+            weekback: 'orange',
+            yearback: '#fe8616',
+            monthback: '#fe8616',
+            deviceList: JSON.parse(localStorage.getItem('AreaTree')),
+            dateKey: 1,
         };
 
         if (localStorage.getItem('usertype') === "1") {
@@ -66,16 +86,19 @@ class App extends React.Component {
                             </div>
                         )
                     }
-                },
-                {
-                    title: "负责人姓名",
-                    dataIndex: "userName",
                 }, {
-                    title: "联系电话",
-                    dataIndex: "phone",
-                },
-
-                {
+                    title: "单位热力图",
+                    dataIndex: "id",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.hotmap(text, record, index)}>
+                                    查看
+                                </span>
+                            </div>
+                        );
+                    }
+                }, {
                     title: "详细地址",
                     dataIndex: "address",
                 }, {
@@ -84,13 +107,26 @@ class App extends React.Component {
                     render: (text, record, index) => {
                         return (
                             <div>
-                                <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}>
-                                    <span style={{ color: '#fe8616', cursor: 'pointer' }}>{text} </span>
-                                </Tooltip>
+                                {/* <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}> */}
+                                <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.devicenum(text, record, index)}>{text} </span>
+                                {/* </Tooltip> */}
                             </div>
                         )
                     }
+                }, {
+                    title: "负责人",
+                    dataIndex: "id",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span onClick={() => this.unitdetail(text, record, index)} style={{ color: '#fe8616', cursor: 'pointer' }}>
+                                    详情
+                                </span>
+                            </div>
+                        );
+                    }
                 },
+
                 {
                     title: "创建时间",
                     dataIndex: "gmtCreate",
@@ -139,16 +175,19 @@ class App extends React.Component {
                             </div>
                         )
                     }
-                },
-                {
-                    title: "负责人姓名",
-                    dataIndex: "userName",
                 }, {
-                    title: "联系电话",
-                    dataIndex: "phone",
-                },
-
-                {
+                    title: "单位热力图",
+                    dataIndex: "id",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.hotmap(text, record, index)}>
+                                    查看
+                                </span>
+                            </div>
+                        );
+                    }
+                }, {
                     title: "详细地址",
                     dataIndex: "address",
                 }, {
@@ -157,13 +196,26 @@ class App extends React.Component {
                     render: (text, record, index) => {
                         return (
                             <div>
-                                <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}>
-                                    <span style={{ color: '#fe8616', cursor: 'pointer' }}>{text} </span>
-                                </Tooltip>
+                                {/* <Tooltip title={"烟感数量：" + record.oneNetDeviceQuantity + "个  ~ 摄像头数量：" + record.ysyDeviceQuantity + "个"}> */}
+                                <span style={{ color: '#fe8616', cursor: 'pointer' }} onClick={() => this.devicenum(text, record, index)}>{text} </span>
+                                {/* </Tooltip> */}
                             </div>
                         )
                     }
+                }, {
+                    title: "负责人",
+                    dataIndex: "id",
+                    render: (text, record, index) => {
+                        return (
+                            <div>
+                                <span onClick={() => this.unitdetail(text, record, index)} style={{ color: '#fe8616', cursor: 'pointer' }}>
+                                    详情
+                                </span>
+                            </div>
+                        );
+                    }
                 },
+
                 {
                     title: "创建时间",
                     dataIndex: "gmtCreate",
@@ -332,6 +384,9 @@ class App extends React.Component {
             areaid: undefined,
             username: undefined,
             phone: undefined,
+            peoplevisible: false,
+            hotvisible: false,
+            devicevisible: false,
         })
     }
 
@@ -471,7 +526,122 @@ class App extends React.Component {
         })
     }
 
+    //打开负责人详情
+    unitdetail = (text, record, index) => {
+        this.setState({
+            peoplevisible: true,
+            userName: record.userName,
+            phone: record.phone,
+        })
+    }
 
+    getUnitAlarmlist = () => {
+        getUnitAlarm([
+            this.state.dateKey,
+            this.state.unitid,
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
+                if (this.state.dateKey === 3) {
+                    for (var i in res.data.data) {
+                        res.data.data[i].time = res.data.data[i].time.substring(0, 7)
+                    }
+                    var arr = res.data.data
+                    arr.sort(function (a, b) {
+                        return a.time < b.time ? -1 : 1
+                    });
+                } else {
+                    for (var i in res.data.data) {
+                        res.data.data[i].time = res.data.data[i].time.substring(5, 10)
+                    }
+                }
+
+                this.setState({
+                    devicealarmlist: res.data.data,
+                    // unitNums: res.data.data.unitNum,
+                    // deviceNums: res.data.data.deviceNum,
+                })
+            }
+        });
+    }
+
+
+    //打开单位热力图
+    hotmap = (text, record, index) => {
+        this.setState({
+            unitid: record.id
+        }, function () {
+            this.getUnitAlarmlist()
+        })
+        getUnitAlarmHeatImage([
+            record.id,
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
+                var arr = []
+                for (var i = 6; i < 24; i++) {
+                    arr.push({
+                        "key": i + ":00",
+                        "num": 0,
+                        "value": i,
+                    })
+                }
+
+                for (var i in res.data.data) {
+                    for (var j in arr) {
+                        if (parseInt(res.data.data[i].gmtCreate.substring(11, 13)) === arr[j].value) {
+                            arr[j].num += 1
+                        }
+                    }
+                }
+                this.setState({
+                    hotvisible: true,
+                    scenetimelist: arr
+                })
+            }
+        });
+
+    }
+
+    monthdate = () => {
+        this.setState({
+            dateKey: 2,
+            monthback: 'orange',
+            yearback: '#fe8616',
+            weekback: '#fe8616',
+        }, function () {
+            this.getUnitAlarmlist()
+        })
+    }
+
+    yeardate = () => {
+        this.setState({
+            dateKey: 3,
+            yearback: 'orange',
+            monthback: '#fe8616',
+            weekback: '#fe8616',
+        }, function () {
+            this.getUnitAlarmlist()
+        })
+    }
+
+    weekdate = () => {
+        this.setState({
+            weekback: 'orange',
+            yearback: '#fe8616',
+            monthback: '#fe8616',
+            dateKey: 1
+        }, function () {
+            this.getUnitAlarmlist()
+        })
+    }
+
+    //打开设备数量弹窗
+    devicenum = (text, record, index) => {
+        this.setState({
+            devicevisible: true,
+            ysyDeviceQuantity: record.ysyDeviceQuantity,
+            oneNetDeviceQuantity: record.oneNetDeviceQuantity,
+        })
+    }
 
 
 
@@ -499,6 +669,20 @@ class App extends React.Component {
             //     cell: EditableCell,
             // },
         };
+
+        const unitcols = {
+            sales: {
+                tickInterval: 20
+            }
+        };
+
+        const colss = {
+            month: {
+                range: [0, 1]
+            }
+        };
+
+
         return (
             <Layout id="alarm" >
                 <Layout>
@@ -604,6 +788,143 @@ class App extends React.Component {
                                 onChange={this.phone}
                                 value={this.state.phone}
                             />
+                        </div>
+                    </Modal>
+                    <Modal
+                        title="负责人信息"
+                        visible={this.state.peoplevisible}
+                        // onOk={this.deleteunit}
+                        footer={null}
+                        width="300px"
+                        // okText="删除"
+                        centered
+                        onCancel={this.handleCancel}
+                        closeIcon={listion}
+                    >
+                        <div>
+                            <div className="personinfo">
+                                <span>负责人姓名：</span><span>{this.state.userName}</span>
+                            </div>
+                            <div className="personinfo">
+                                <span>联系电话：</span><span>{this.state.phone}</span>
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal
+                        title="设备数量"
+                        visible={this.state.devicevisible}
+                        // onOk={this.deleteunit}
+                        footer={null}
+                        width="300px"
+                        // okText="删除"
+                        centered
+                        onCancel={this.handleCancel}
+                        closeIcon={listion}
+                    >
+                        <div>
+                            <div className="personinfo">
+                                <span>摄像头数量：</span><span>{this.state.ysyDeviceQuantity}个</span>
+                            </div>
+                            <div className="personinfo">
+                                <span>烟感数量：</span><span>{this.state.oneNetDeviceQuantity}个</span>
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal
+                        title="单位热力图"
+                        visible={this.state.hotvisible}
+                        // onOk={this.deleteunit}
+                        footer={null}
+                        width="750px"
+                        // okText="删除"
+                        centered
+                        onCancel={this.handleCancel}
+                        closeIcon={listion}
+                    >
+                        <div>
+                            <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+                                <Button type="primary" style={{ marginLeft: '30px', marginRight: '10px', background: this.state.weekback }} onClick={this.weekdate}  >
+                                    近一周
+                                                </Button>
+                                <Button type="primary" onClick={this.monthdate} style={{ marginRight: '10px', background: this.state.monthback }}>
+                                    近一月
+                                                </Button>
+                                <Button type="primary" onClick={this.yeardate} style={{ background: this.state.yearback }} >
+                                    近一年
+                                                </Button>
+                            </div>
+                            <Chart height={200} data={this.state.devicealarmlist} scale={colss} forceFit padding="auto" style={{marginBottom:'20px'}}>
+                                <Legend />
+                                <Axis name="time" />
+                                <Axis
+                                    name="alarmNum"
+                                    label={{
+                                        formatter: val => `${val}`
+                                    }}
+                                />
+                                <Tooltip
+                                    crosshairs={{
+                                        type: "y"
+                                    }}
+                                />
+                                <Geom
+                                    type="line"
+                                    position="time*alarmNum"
+                                    size={2}
+                                    color={"#ffc13f"}
+                                    shape={"smooth"}
+                                    tooltip={[
+                                        "time*alarmNum",
+                                        (time, alarmNum) => {
+                                            return {
+                                                name: "告警总数" + "：",
+                                                value: ` ${alarmNum} 个`
+                                            };
+                                        }
+                                    ]}
+                                />
+                                <Geom
+                                    type="point"
+                                    position="time*alarmNum"
+                                    size={4}
+                                    shape={"hollowCircle"}
+                                    color={"#ffc13f"}
+                                    style={{
+                                        stroke: "#fff",
+                                        lineWidth: 1
+                                    }}
+                                    tooltip={[
+                                        "time*alarmNum",
+                                        (time, alarmNum) => {
+                                            return {
+                                                name: "告警总数" + "：",
+                                                value: ` ${alarmNum} 个`
+                                            };
+                                        }
+                                    ]}
+                                />
+                                <div style={{ textAlign: 'center' }}>
+                                    设备告警统计
+                                                    </div>
+                            </Chart>
+                            <Chart height={200} data={this.state.scenetimelist} scale={unitcols} forceFit padding="auto">
+                                <Axis name="key" />
+                                <Axis name="num" />
+                                <Tooltip
+                                />
+                                <Geom type="interval" position="key*num" color="#ffcc8a" >
+                                    <Label
+                                        content="num"
+                                        textStyle={{
+                                            fill: '#fd7a12', // 文本的颜色
+                                            textBaseline: 'middle'
+                                        }}
+                                    />
+                                </Geom>
+                                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                                    24小时告警趋势图 <span style={{ color: '#999', fontSize: '14px', marginLeft: '5px' }}>基于过去两周的数据统计</span>
+                                </div>
+                            </Chart>
                         </div>
                     </Modal>
                 </Layout>

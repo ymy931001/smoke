@@ -55,3 +55,9 @@
 	height: 0;
 }
 
+
+.personinfo{
+    display: flex;
+    justify-content: space-between;
+    line-height: 35px;
+}

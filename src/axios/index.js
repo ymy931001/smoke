@@ -369,3 +369,13 @@ export const getUnitAlarm = params =>
   });
 
 
+//单位告警折线图及热力图
+export const getUnitAlarmAndHeat = params =>
+  http.get(url + "/api/v1/statistics/getUnitAlarmAndHeat", {
+    access_token: localStorage.getItem('token'),
+    dateKey: params[0],
+    unitId: params[1],
+  });
+
+
+

@@ -22,7 +22,7 @@ import {
     Shape,
     Util
 } from "bizcharts";
-import { getunitList, addunit, deleteunit, getUnitAlarmHeatImage, getUnitAlarm } from '../axios';
+import { getunitList, addunit, deleteunit, getUnitAlarmHeatImage, getUnitAlarm, getUnitAlarmAndHeat } from '../axios';
 
 
 import "./unit.css";
@@ -536,29 +536,46 @@ class App extends React.Component {
     }
 
     getUnitAlarmlist = () => {
-        getUnitAlarm([
+        getUnitAlarmAndHeat([
             this.state.dateKey,
             this.state.unitid,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
                 if (this.state.dateKey === 3) {
-                    for (var i in res.data.data) {
-                        res.data.data[i].time = res.data.data[i].time.substring(0, 7)
+                    for (var i in res.data.data.unitAlarmList) {
+                        res.data.data.unitAlarmList[i].time = res.data.data.unitAlarmList[i].time.substring(0, 7)
                     }
-                    var arr = res.data.data
-                    arr.sort(function (a, b) {
+                    var newarr = res.data.data.unitAlarmList
+                    newarr.sort(function (a, b) {
                         return a.time < b.time ? -1 : 1
                     });
                 } else {
-                    for (var i in res.data.data) {
-                        res.data.data[i].time = res.data.data[i].time.substring(5, 10)
+                    for (var i in res.data.data.unitAlarmList) {
+                        res.data.data.unitAlarmList[i].time = res.data.data.unitAlarmList[i].time.substring(5, 10)
+                    }
+                }
+
+                var arr = []
+                for (var i = 6; i < 24; i++) {
+                    arr.push({
+                        "key": i + ":00",
+                        "num": 0,
+                        "value": i,
+                    })
+                }
+
+                for (var i in res.data.data.eventList) {
+                    for (var j in arr) {
+                        if (parseInt(res.data.data.eventList[i].gmtCreate.substring(11, 13)) === arr[j].value) {
+                            arr[j].num += 1
+                        }
                     }
                 }
 
                 this.setState({
-                    devicealarmlist: res.data.data,
-                    // unitNums: res.data.data.unitNum,
-                    // deviceNums: res.data.data.deviceNum,
+                    hotvisible: true,
+                    scenetimelist: arr,
+                    devicealarmlist: res.data.data.unitAlarmList,
                 })
             }
         });
@@ -572,33 +589,6 @@ class App extends React.Component {
         }, function () {
             this.getUnitAlarmlist()
         })
-        getUnitAlarmHeatImage([
-            record.id,
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                var arr = []
-                for (var i = 6; i < 24; i++) {
-                    arr.push({
-                        "key": i + ":00",
-                        "num": 0,
-                        "value": i,
-                    })
-                }
-
-                for (var i in res.data.data) {
-                    for (var j in arr) {
-                        if (parseInt(res.data.data[i].gmtCreate.substring(11, 13)) === arr[j].value) {
-                            arr[j].num += 1
-                        }
-                    }
-                }
-                this.setState({
-                    hotvisible: true,
-                    scenetimelist: arr
-                })
-            }
-        });
-
     }
 
     monthdate = () => {
@@ -853,7 +843,7 @@ class App extends React.Component {
                                     近一年
                                                 </Button>
                             </div>
-                            <Chart height={200} data={this.state.devicealarmlist} scale={colss} forceFit padding="auto" style={{marginBottom:'20px'}}>
+                            <Chart height={200} data={this.state.devicealarmlist} scale={colss} forceFit padding="auto" style={{ marginBottom: '20px' }}>
                                 <Legend />
                                 <Axis name="time" />
                                 <Axis
@@ -922,7 +912,7 @@ class App extends React.Component {
                                     />
                                 </Geom>
                                 <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-                                    24小时告警趋势图 <span style={{ color: '#999', fontSize: '14px', marginLeft: '5px' }}>基于过去两周的数据统计</span>
+                                    24小时告警趋势图
                                 </div>
                             </Chart>
                         </div>

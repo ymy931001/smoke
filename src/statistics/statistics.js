@@ -446,7 +446,7 @@ class App extends React.Component {
                                         </div>
                                         <Row gutter={24}>
                                             <Col className="gutter-row" span={5}>
-                                                <div style={{ borderRight: '1px solid #ffd7b8' }} id="menulist">
+                                                <div style={{ borderRight: '1px solid #ffd7b8',minHeight:'650px' }} id="menulist">
                                                     <Menu
                                                         defaultSelectedKeys={['2']}
                                                         // defaultOpenKeys={['sub1']}
@@ -457,15 +457,6 @@ class App extends React.Component {
                                                         onSelect={this.menuchange}
                                                     >
                                                         {contmenu}
-                                                        {/* <Menu.Item key="1" icon={<PieChartOutlined />}>
-                                                            Option 1
-                                                    </Menu.Item>
-                                                        <Menu.Item key="2" icon={<DesktopOutlined />}>
-                                                            Option 2
-                                                    </Menu.Item>
-                                                        <Menu.Item key="3" icon={<ContainerOutlined />}>
-                                                            Option 3
-                                                    </Menu.Item> */}
                                                     </Menu>
                                                 </div>
                                             </Col>

@@ -104,7 +104,7 @@ class App extends Component {
     return (
       <ConfigProvider locale={zh_CN}>
         <div className="bodymain">
-          <Header>
+          <Header >
             <Headers />
           </Header>
           <Layout>
@@ -113,6 +113,12 @@ class App extends Component {
                 onMouseEnter={this.mouseenter}
                 onMouseLeave={this.onmouseleave}
                 collapsed={this.state.collapsed}
+                // style={{
+                //   overflow: 'auto',
+                //   height: '100vh',
+                //   position: 'fixed',
+                //   left: 0,
+                // }}
               >
                 <Menu theme="dark"
                   onClick={this.menuClick}

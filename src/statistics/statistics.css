@@ -169,6 +169,7 @@
 }
 
 #menulist  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+
     background: url("http://disimg.terabits.cn/menuback.png") no-repeat;
 
   }
@@ -222,23 +223,78 @@
     display:none;
 }
 
+@media screen and (max-width: 1700px) {
+    #menulist  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+
+        background: url("http://disimg.terabits.cn/menuback1.png") no-repeat;
+    
+      }
+  }
+
 
 @media screen and (max-width: 1525px) {
     .circlestyle{
         font-size: 20px;
     }
+    #menulist  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+
+        background: url("http://disimg.terabits.cn/menuback2.png") no-repeat;
     
+      }
+    
+      #menulist .ant-menu-dark.ant-menu-inline .ant-menu-item, .ant-menu-submenu-title{
+        padding-left: 25px !important;
+      }
   }
   
+  @media screen and (max-width: 1500px) {
+    .circlestyle{
+        font-size: 15px;
+    }
+    .tdfirst{
+      font-size: 12px;
+    }
   
+    .tdtwo{
+        font-size: 12px;
+  }
+  .tdthree{
+    font-size: 12px;
+  }
+  
+  .tdfour{
+    font-size: 12px;
+  }
+    
+}
+
   @media screen and (max-width: 1450px) {
     .circlestyle{
         font-size: 15px;
     }
+
     
   }
 
   
   @media screen and (max-width: 1350px) {
+    #menulist  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
 
+        background: url("http://disimg.terabits.cn/menuback3.png") no-repeat;
+    
+      }
+    .tdfirst{
+        width: 5%;
+    }
+  
+    .tdtwo{
+      width: 40%;
+  }
+  .tdthree{
+      width: 25%;
+  }
+  
+  .tdfour{
+      width: 30%;
+  }
   }

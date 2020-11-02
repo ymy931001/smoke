@@ -56,6 +56,8 @@ class App extends React.Component {
             typenone: "inline-block",
             weekback: 'orange',
             yearback: '#fe8616',
+            longitude: 122.11404,
+            latitude: 30.01978,
             monthback: '#fe8616',
             deviceList: JSON.parse(localStorage.getItem('AreaTree')),
             dateKey: 1,
@@ -281,9 +283,17 @@ class App extends React.Component {
             var map = new AMap.Map("mapContainer", {
                 resizeEnable: true,
                 keyboardEnable: false,
-                center: [122.11404, 30.01978],//地图中心点
+                // center: [122.11404, 30.01978],//地图中心点
+                center: [this.state.longitude, this.state.latitude,],//地图中心点
                 zoom: 15,//地图显示的缩放级别
             });
+
+            var marker = new AMap.Marker({
+                position: new AMap.LngLat(this.state.longitude, this.state.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: this.state.unitname
+            });
+
+            map.add(marker);
 
             AMap.plugin(['AMap.Autocomplete', 'AMap.PlaceSearch'], function () {
                 var autoOptions = {
@@ -338,9 +348,6 @@ class App extends React.Component {
 
     //编辑单位
     edit = (text, record, index) => {
-        console.log(record)
-        console.log([record.cityId, record.districtId])
-        this.initMap()
         this.setState({
             unitname: record.unit,
             address: record.address,
@@ -351,7 +358,11 @@ class App extends React.Component {
             areaid: record.districtId,
             username: record.userName,
             phone: record.phone,
+            latitude: record.latitude,
+            longitude: record.longitude,
             unitvisible: true,
+        }, function () {
+            this.initMap()
         })
     }
 

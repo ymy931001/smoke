@@ -575,7 +575,7 @@ class App extends React.Component {
 
                                                 }}
                                             >
-                                                <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
+                                                <Coord type={"theta"} radius={0.85} innerRadius={0.75} />
                                                 <Axis name="percent" />
                                                 <Legend
                                                     position="bottom"
@@ -588,7 +588,7 @@ class App extends React.Component {
                                                     <Guide.Text
                                                         top
                                                         position={['50%', '50%']}
-                                                        content={`${this.state.selectcount}`}
+                                                        content={`总计:${this.state.selectcount}`}
                                                         style={{ textAlign: 'center', fontSize: 24, color: "#333", fontWeight: 'bold' }}
                                                     // className="circlestyle"
                                                     />

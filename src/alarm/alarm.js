@@ -382,7 +382,9 @@ class App extends React.Component {
     unitType = (value) => {
         console.log(value)
         this.setState({
-            unitType: value
+            unitType: value,
+            pageNum:1,
+            pageNumSize:10,
         }, function () {
             this.cameraalarm()
         })
@@ -393,7 +395,9 @@ class App extends React.Component {
     unitTypes = (value) => {
         console.log(value)
         this.setState({
-            unitTypes: value
+            unitTypes: value,
+            pageNums:1,
+            pageNumSizes:10,
         }, function () {
             this.sensoralarm()
         })

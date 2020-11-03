@@ -446,7 +446,7 @@ class App extends React.Component {
                                         </div>
                                         <Row gutter={24}>
                                             <Col className="gutter-row" span={5}>
-                                                <div style={{ borderRight: '1px solid #ffd7b8',minHeight:'650px' }} id="menulist">
+                                                <div style={{ borderRight: '1px solid #ffd7b8', minHeight: '650px' }} id="menulist">
                                                     <Menu
                                                         defaultSelectedKeys={['2']}
                                                         // defaultOpenKeys={['sub1']}
@@ -519,27 +519,34 @@ class App extends React.Component {
 
                                                 </div>
                                                 <div style={{ height: '350px' }}>
-                                                    <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit padding="auto">
+                                                    <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit
+                                                        // padding="auto"
+                                                        padding={[20,10,20,0]}
+                                                    >
                                                         <Axis name="key" />
                                                         <Axis name="num" />
                                                         <Tooltip
                                                         />
-                                                        <Geom type="interval" position="key*num" color="#ffcc8a" >
+                                                        <Geom type="interval"
+                                                            position="key*num"
+                                                            color="#ffcc8a"
+                                                            tooltip={[
+                                                                "key*num",
+                                                                (key, num) => {
+                                                                    return {
+                                                                        name: "告警数量" + "：",
+                                                                        value: ` ${num} 个`
+                                                                    };
+                                                                }
+                                                            ]}
+                                                        >
                                                             <Label
                                                                 content="num"
                                                                 textStyle={{
                                                                     fill: '#fd7a12', // 文本的颜色
                                                                     textBaseline: 'middle'
                                                                 }}
-                                                            // tooltip={[
-                                                            //     "key*num",
-                                                            //     (key, num) => {
-                                                            //         return {
-                                                            //             name: "告警数量" + "：",
-                                                            //             value: ` ${num} 个`
-                                                            //         };
-                                                            //     }
-                                                            // ]}
+
                                                             />
                                                         </Geom>
                                                         <div style={{ textAlign: 'center' }}>

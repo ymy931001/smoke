@@ -383,8 +383,8 @@ class App extends React.Component {
             videovisible: false,
             videourl: undefined,
         })
-        // this.getcameraList()
-        window.location.reload()
+        // // this.getcameraList()
+        // window.location.reload()
     }
 
 
@@ -1248,6 +1248,7 @@ class App extends React.Component {
                         onCancel={this.handleCancels}
                         closeIcon={listion}
                         footer={null}
+                        destroyOnClose
                     >
                         {/* <video id="myVideo" controls style='width: 100%;height: auto'>
                             <source id="source" src={this.state.videourl} type="application/x-mpegURL"></source>

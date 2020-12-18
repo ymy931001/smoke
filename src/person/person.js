@@ -160,11 +160,11 @@ class journal extends Component {
                 </div>
                 <div className="line">
                   <span className="personl">用户手册：</span>
-                  {/* <a href="" style={{ display: 'inline-block', color: '#fe8616' }}> */}
-                  <span style={{ display: 'inline-block', color: '#fe8616' }}>
-                    舟山市违禁吸烟管理平台使用手册
+                  <a href="https://mainimg.terabits.cn/%E8%88%9F%E5%B1%B1%E5%B8%82%E8%BF%9D%E7%A6%81%E5%90%B8%E7%83%9F%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.pdf"  target="_blank" style={{ display: 'inline-block', color: '#fe8616' }}>
+                    <span style={{ display: 'inline-block', color: '#fe8616' }}>
+                      舟山市违禁吸烟管理平台使用手册
                     </span>
-                  {/* </a> */}
+                  </a>
                 </div>
               </div>
             </Content>

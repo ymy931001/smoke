@@ -86,8 +86,10 @@ class App extends React.Component {
             if (res.data && res.data.message === "success") {
                 this.setState({
                     unitNum: res.data.data.unitNum,
-                    deviceNum: res.data.data.deviceNum,
                     eventNum: res.data.data.eventNum,
+                    cameraNum: res.data.data.deviceCountVO.camera,
+                    sensorNum: res.data.data.deviceCountVO.sensor,
+                    // deviceNum: res.data.data.deviceNum,
                     dailyEventNum: res.data.data.dailyEventNum,
                 })
             }
@@ -357,9 +359,9 @@ class App extends React.Component {
                         </div>
                         <div>
                             <Row gutter={24}>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={4}  style={{paddingLeft:'12px'}}>
                                     <div className="dashboard">
-                                        <img src={require('../images/dashboard1.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
+                                        <img src={require('../images/dashboard1.png')} alt="" style={{ width: '25%', marginRight: '8%' }} />
                                         <div>
                                             <div className="dashtext">
                                                 <span className="dashtxt">
@@ -373,7 +375,7 @@ class App extends React.Component {
                                         </div>
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={5}>
                                     <div className="dashboard">
                                         <img src={require('../images/dashboard2.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
                                         <div>
@@ -389,23 +391,39 @@ class App extends React.Component {
                                         </div>
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={5}>
+                                    <div className="dashboard">
+                                        <img src={require('../images/dashboard5.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
+                                        <div>
+                                            <div className="dashtext1">
+                                                <span className="dashtxt">
+                                                    {this.state.cameraNum}
+                                                </span>
+                                                {/* <span>个</span> */}
+                                            </div>
+                                            <div className="dashbottxt">
+                                                摄像头数量
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col className="gutter-row" span={5}>
                                     <div className="dashboard">
                                         <img src={require('../images/dashboard3.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
                                         <div>
                                             <div className="dashtext2">
                                                 <span className="dashtxt">
-                                                    {this.state.deviceNum}
+                                                    {this.state.sensorNum}
                                                 </span>
                                                 <span>个</span>
                                             </div>
                                             <div className="dashbottxt">
-                                                设备总数
+                                                传感器数量
                                                     </div>
                                         </div>
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={5}  style={{paddingRight:'12px'}}>
                                     <div className="dashboard">
                                         <img src={require('../images/dashboard4.png')} alt="" style={{ width: '20%', marginRight: '8%' }} />
                                         <div>
@@ -521,7 +539,7 @@ class App extends React.Component {
                                                 <div style={{ height: '350px' }}>
                                                     <Chart height={300} data={this.state.scenetimelist} scale={unitcols} forceFit
                                                         // padding="auto"
-                                                        padding={[20,10,20,0]}
+                                                        padding={[20, 10, 20, 0]}
                                                     >
                                                         <Axis name="key" />
                                                         <Axis name="num" />

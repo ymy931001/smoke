@@ -265,7 +265,19 @@
   .tdfour{
     font-size: 12px;
   }
-    
+  #statistics .dashtxt{
+    font-size: 25px;
+}
+#statistics .ant-col-5{
+    padding-left: 6px !important;
+    padding-right: 6px ;
+}
+
+#statistics .ant-col-4{
+    padding-left: 6px ;
+    padding-right: 6px ;
+}   
+
 }
 
   @media screen and (max-width: 1450px) {

@@ -11,7 +11,7 @@ import {
 } from "antd";
 import {
     getdeviceList, getNotHaveList, getunitList, addsensor,
-    addcamera, deletedevice, changestaus, getRealVideo, getdevicelog, activeDevice
+    addcamera, deletedevice, changestaus, getRealVideo, getdevicelog, activeDevice, url
 } from '../axios';
 
 
@@ -265,9 +265,16 @@ class App extends React.Component {
             this.state.searchnames,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
+                console.log(res.data.data)
+                var arr = []
+                for (var i in res.data.data) {
+                    arr.push(res.data.data[i].id)
+                }
                 this.setState({
+                    senorids: arr,
                     sensorlist: res.data.data
                 }, function () {
+                    console.log(this.state.cameraids)
                     if (this.state.sensorlist.length > 10) {
                         this.setState({
                             page: true,
@@ -294,7 +301,12 @@ class App extends React.Component {
             this.state.searchname,
         ]).then(res => {
             if (res.data && res.data.message === "success") {
+                var arr = []
+                for (var i in res.data.data) {
+                    arr.push(res.data.data[i].id)
+                }
                 this.setState({
+                    cameraids: arr.join(','),
                     cameralist: res.data.data
                 }, function () {
                     if (this.state.cameralist.length > 10) {
@@ -800,6 +812,42 @@ class App extends React.Component {
     }
 
 
+    //摄像头数据导出
+    export = () => {
+        window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=2&ids=" + this.state.cameraids, "_self")
+    }
+
+
+    //传感器数据导出
+    exports = () => {
+        window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=1&ids=" + this.state.senorids, "_self")
+    }
+
+
+    //摄像头数据筛选
+    cameralistchange = (a, b, c, d) => {
+        var arr = []
+        for (var i in d.currentDataSource) {
+            arr.push(d.currentDataSource[i].id)
+        }
+        this.setState({
+            cameraids: arr.join(',')
+        })
+    }
+
+    //传感器数据筛选
+    sensorlistchange = (a, b, c, d) => {
+        var arr = []
+        for (var i in d.currentDataSource) {
+            arr.push(d.currentDataSource[i].id)
+        }
+        this.setState({
+            senorids: arr.join(',')
+        })
+    }
+
+
+
     render() {
 
         const prooptions = this.state.unitlist.map((province) => <Option key={province.id}  >{province.name}</Option>);
@@ -1122,6 +1170,9 @@ class App extends React.Component {
                                                     value={this.state.searchname}
                                                     enterButton style={{ marginBottom: '20px', width: '300px' }}
                                                 />
+                                                <Button type="primary" onClick={this.export} style={{ display: this.state.typedis, marginLeft: '10px' }} >
+                                                    数据导出
+                                            </Button>
                                             </div>
                                             <Button type="primary" onClick={this.addcamera} style={{ display: this.state.typedis }} >
                                                 添加设备
@@ -1132,6 +1183,7 @@ class App extends React.Component {
                                             columns={this.cameraColumns}
                                             pagination={this.state.camerapage}
                                             components={components}
+                                            onChange={this.cameralistchange}
                                         />
                                     </div>
                                 </TabPane>
@@ -1154,6 +1206,9 @@ class App extends React.Component {
                                                     value={this.state.searchnames}
                                                     enterButton style={{ marginBottom: '20px', width: '300px' }}
                                                 />
+                                                <Button type="primary" onClick={this.exports} style={{ display: this.state.typedis, marginLeft: '10px' }} >
+                                                    数据导出
+                                            </Button>
                                             </div>
                                             <Button type="primary" onClick={this.adddevice} style={{ display: this.state.typedis }} >
                                                 添加设备
@@ -1164,6 +1219,7 @@ class App extends React.Component {
                                             columns={nodeInfoTableColumns}
                                             pagination={this.state.page}
                                             components={components}
+                                            onChange={this.sensorlistchange}
                                         />
                                     </div>
                                 </TabPane>

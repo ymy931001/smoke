@@ -271,7 +271,7 @@ class App extends React.Component {
                     arr.push(res.data.data[i].id)
                 }
                 this.setState({
-                    senorids: arr,
+                    senorids: arr.join(','),
                     sensorlist: res.data.data
                 }, function () {
                     console.log(this.state.cameraids)
@@ -814,18 +814,27 @@ class App extends React.Component {
 
     //摄像头数据导出
     export = () => {
-        window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=2&ids=" + this.state.cameraids, "_self")
+        if (this.state.cameraids === "") {
+            message.error('请选择要导出的数据')
+        } else {
+            window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=2&ids=" + this.state.cameraids, "_self")
+        }
     }
 
 
     //传感器数据导出
     exports = () => {
-        window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=1&ids=" + this.state.senorids, "_self")
+        if (this.state.senorids === "") {
+            message.error('请选择要导出的数据')
+        } else {
+            window.open(url + '/api/v1/device/export?access_token=' + localStorage.getItem('token') + "&deviceType=1&ids=" + this.state.senorids, "_self")
+        }
     }
 
 
     //摄像头数据筛选
     cameralistchange = (a, b, c, d) => {
+        console.log(d)
         var arr = []
         for (var i in d.currentDataSource) {
             arr.push(d.currentDataSource[i].id)

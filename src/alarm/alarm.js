@@ -107,9 +107,33 @@ class App extends React.Component {
                 }
             },
             {
+                title: "处置结果",
+                dataIndex: "gmtCreate",
+                render: (text, record, index) => {
+                    return (
+                        <div>
+                            <span style={{ color: 'rgb(8, 192, 77)', cursor: 'pointer' }}>已处置</span>
+                        </div>
+                    )
+                }
+            },
+            {
                 title: "告警时间",
                 dataIndex: "gmtCreate",
                 sorter: (a, b) => new Date(a) > new Date(b) ? 1 : -1,
+            },
+            {
+                title: "操作",
+                dataIndex: "gmtCreate",
+                render: (text, record, index) => {
+                    return (
+                        <div>
+                            <span style={{ marginLeft: '10px' }} onClick={() => this.alarmDelete(text, record, index)}>
+                                <a><img src={require('../images/delete.png')} alt="" /></a>
+                            </span>
+                        </div>
+                    );
+                }
             },
         ];
 
@@ -151,9 +175,33 @@ class App extends React.Component {
                 dataIndex: "location",
             },
             {
+                title: "处置结果",
+                dataIndex: "gmtCreate",
+                render: (text, record, index) => {
+                    return (
+                        <div>
+                            <span style={{ color: 'rgb(8, 192, 77)', cursor: 'pointer' }}>已处置</span>
+                        </div>
+                    )
+                }
+            },
+            {
                 title: "告警时间",
                 dataIndex: "gmtCreate",
                 sorter: (a, b) => new Date(a) > new Date(b) ? 1 : -1,
+            },
+            {
+                title: "操作",
+                dataIndex: "gmtCreate",
+                render: (text, record, index) => {
+                    return (
+                        <div>
+                            <span style={{ marginLeft: '10px' }} onClick={() => this.alarmDelete(text, record, index)}>
+                                <a><img src={require('../images/delete.png')} alt="" /></a>
+                            </span>
+                        </div>
+                    );
+                }
             },
         ];
 
@@ -280,11 +328,20 @@ class App extends React.Component {
 
     }
 
+
+    //打开删除弹窗
+    alarmDelete=()=>{
+        this.setState({
+            alarmdeletevisible: true,
+        })
+    }
+
     //关闭
     handleCancel = () => {
         this.setState({
             videovisible: false,
             videourl: undefined,
+            alarmdeletevisible: false,
         })
     }
 
@@ -383,8 +440,8 @@ class App extends React.Component {
         console.log(value)
         this.setState({
             unitType: value,
-            pageNum:1,
-            pageNumSize:10,
+            pageNum: 1,
+            pageNumSize: 10,
         }, function () {
             this.cameraalarm()
         })
@@ -396,8 +453,8 @@ class App extends React.Component {
         console.log(value)
         this.setState({
             unitTypes: value,
-            pageNums:1,
-            pageNumSizes:10,
+            pageNums: 1,
+            pageNumSizes: 10,
         }, function () {
             this.sensoralarm()
         })
@@ -605,6 +662,18 @@ class App extends React.Component {
                         {/* <Carousel effect="fade"  autoplay> */}
                         {imgoption}
                         {/* </Carousel> */}
+                    </Modal>
+                    <Modal
+                        title="删除报警记录"
+                        visible={this.state.alarmdeletevisible}
+                        onOk={this.deletealarm}
+                        width="300px"
+                        okText="删除"
+                        centered
+                        onCancel={this.handleCancel}
+                        closeIcon={listion}
+                    >
+                        您确定要删除该条报警记录吗？
                     </Modal>
                 </Layout>
             </Layout >

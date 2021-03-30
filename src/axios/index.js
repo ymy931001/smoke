@@ -377,5 +377,12 @@ export const getUnitAlarmAndHeat = params =>
     unitId: params[1],
   });
 
+//删除报警记录
+export const deletealarm = params =>
+  http.delete(url + "/api/v1/alarm", {
+    access_token: localStorage.getItem('token'),
+    eventId: params[0],
+  });
+
 
 

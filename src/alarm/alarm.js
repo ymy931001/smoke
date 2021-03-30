@@ -8,7 +8,7 @@ import {
     Pagination,
     Tabs, message, Modal, DatePicker, Select
 } from "antd";
-import { getalarmList, getAlarmVideoUrl } from '../axios';
+import { getalarmList, getAlarmVideoUrl, deletealarm } from '../axios';
 
 
 import "./alarm.css";
@@ -330,8 +330,9 @@ class App extends React.Component {
 
 
     //打开删除弹窗
-    alarmDelete=()=>{
+    alarmDelete = (text, record, index) => {
         this.setState({
+            eventId: record.id,
             alarmdeletevisible: true,
         })
     }
@@ -460,6 +461,24 @@ class App extends React.Component {
         })
     }
 
+
+    //删除报警记录确认
+    deletealarmok = () => {
+        deletealarm([
+            this.state.eventId,
+        ]).then(res => {
+            if (res.data && res.data.message === "success") {
+                message.success('删除成功')
+                this.setState({
+                    alarmdeletevisible: false, 
+                })
+                this.cameraalarm()
+                this.sensoralarm()
+            } else {
+                message.error(res.data.message)
+            }
+        });
+    }
 
     render() {
         const imgoption = this.state.imglist.map((img) =>
@@ -666,7 +685,7 @@ class App extends React.Component {
                     <Modal
                         title="删除报警记录"
                         visible={this.state.alarmdeletevisible}
-                        onOk={this.deletealarm}
+                        onOk={this.deletealarmok}
                         width="300px"
                         okText="删除"
                         centered

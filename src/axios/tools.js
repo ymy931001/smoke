@@ -92,6 +92,26 @@ export default {
       url,
       // params: { 'Authorization': user, ...params }, // get 请求时带的参数
       params: { ...params }, // get 请求时带的参数
+      timeout: 50000,
+      // responseType: 'blob',
+    }).then(
+      (response) => {
+        return checkStatus(response)
+      }
+    ).then(
+      (res) => {
+        return checkCode(res)
+      }
+    )
+  },
+
+  delete(url, params) {
+    // const user = JSON.parse(localStorage.getItem('user')).token;
+    return axios({
+      method: 'DELETE',
+      url,
+      // params: { 'Authorization': user, ...params }, // get 请求时带的参数
+      params: { ...params }, // get 请求时带的参数
       timeout: 10000,
       // responseType: 'blob',
     }).then(

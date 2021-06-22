@@ -384,5 +384,13 @@ export const deletealarm = params =>
     eventId: params[0],
   });
 
+//获取萤石云token
+export const getYsyToken = params =>
+  http.get(url + "/api/v1/unit/getYsyToken", {
+    access_token: localStorage.getItem('token'),
+  });
 
 
+
+
+  

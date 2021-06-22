@@ -8,7 +8,7 @@ import {
     Pagination,
     Tabs, message, Modal, DatePicker, Select
 } from "antd";
-import { getalarmList, getAlarmVideoUrl, deletealarm } from '../axios';
+import { getalarmList, getAlarmVideoUrl, deletealarm, getYsyToken } from '../axios';
 
 
 import "./alarm.css";
@@ -381,21 +381,41 @@ class App extends React.Component {
 
 
     lookvideo = (text, record, index) => {
-        getAlarmVideoUrl([
-            record.deviceId,
-            record.eventTime
-        ]).then(res => {
-            if (res.data && res.data.message === "success") {
-                if (res.data.data != undefined) {
-                    this.setState({
-                        videovisible: true,
-                        videourl: "http://smoke.terabits.cn" + res.data.data + "?t=20190201"
-                    })
+        var begin = moment(new Date((new Date(record.gmtCreate).getTime() - 1000 * 60 * 10))).format("YYYYMMDDHHmmss")
+        var end = moment(new Date((new Date(record.gmtCreate).getTime() + 1000 * 60 * 10))).format("YYYYMMDDHHmmss")
+        if (record.deviceId === "F89215267") {
+            getYsyToken([
+
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    window.open("https://open.ys7.com/ezopen/h5/iframe_se?url=ezopen://open.ys7.com/"
+                        + record.deviceId + "/1.rec&autoplay=1&accessToken="
+                        + res.data.data
+                        + "&begin=" + begin + "&end=" + end
+                    )
+                } else {
+                    message.error(res.data.message)
                 }
-            } else {
-                message.error(res.data.message)
-            }
-        });
+            });
+        } else {
+            getAlarmVideoUrl([
+                record.deviceId,
+                record.eventTime
+            ]).then(res => {
+                if (res.data && res.data.message === "success") {
+                    if (res.data.data != undefined) {
+                        this.setState({
+                            videovisible: true,
+                            videourl: "http://smoke.terabits.cn" + res.data.data + "?t=20190201"
+                        })
+                    }
+                } else {
+                    message.error(res.data.message)
+                }
+            });
+        }
+
+
     }
 
     //摄像头页数变化
@@ -470,7 +490,7 @@ class App extends React.Component {
             if (res.data && res.data.message === "success") {
                 message.success('删除成功')
                 this.setState({
-                    alarmdeletevisible: false, 
+                    alarmdeletevisible: false,
                 })
                 this.cameraalarm()
                 this.sensoralarm()
